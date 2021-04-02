@@ -1,0 +1,7 @@
+name: McXyhjMMO
+version: ${project.version}
+main: mcxyhj.cn.knkiss.McXyhjMMO
+api-version: 1.16
+authors: [ Knkiss, Dnkiss ]
+description: A RpgMMO For Minecraft From XYHJ
+website: mcxyhj.cn
