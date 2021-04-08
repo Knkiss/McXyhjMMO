@@ -1,59 +1,51 @@
 package mcxyhj.cn.knkiss.profession;
 
-import mcxyhj.cn.knkiss.Manager;
 import mcxyhj.cn.knkiss.config.PlayerData;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.List;
 
 public class ProfessionManager {
 
-    public Miner miner;
-    public Enchanter enchanter;
-    HashMap<UUID,String> playerProfession = new HashMap<>();
+    private static HashMap<String,String> playerProfession = new HashMap<>();
+    private static HashMap<String,Profession> professionHashMap = new HashMap<>();
 
-    public ProfessionManager(){
-        miner = new Miner();
-        enchanter = new Enchanter();
-        Bukkit.getPluginManager().registerEvents(miner, Manager.plugin);
-        Bukkit.getPluginManager().registerEvents(enchanter, Manager.plugin);
+    public static void loadOnEnable(){
+        professionHashMap.put("Miner",new Miner());
+        professionHashMap.put("Enchanter",new Enchanter());
     }
 
+    /*
     public void excuteCommand(Player player, String[] args){
-        if(!playerProfession.containsKey(player.getUniqueId()) && args.length>=2 && args[0].equalsIgnoreCase("select")){
+        if(!playerProfession.containsKey(player.getName()) && args.length>=2 && args[0].equalsIgnoreCase("select")){
             if(checkList(args[1].toLowerCase()))
-                Objects.requireNonNull(getProfessionClass(args[1].toLowerCase())).addPlayer(createNewData(player,args[1].toLowerCase()));
+                Objects.requireNonNull(getProfession(args[1].toLowerCase())).addPlayer(createNewData(player,args[1].toLowerCase()));
             else player.sendMessage("Please select a right profession");
             return;
         }
-        if(!playerProfession.containsKey(player.getUniqueId()) && args.length>=2 && args[0].equalsIgnoreCase("change")){
+        if(!playerProfession.containsKey(player.getName()) && args.length>=2 && args[0].equalsIgnoreCase("change")){
             if(checkList(args[1].toLowerCase()));
                 //TODO 切换职业
             else player.sendMessage("Please select a right profession");
             return;
         }
 
-        Objects.requireNonNull(getProfessionClass(playerProfession.get(player.getUniqueId()))).onCommand(player,args);
+        Objects.requireNonNull(getProfession(playerProfession.get(player.getName()))).onCommand(player,args);
+    }*/
+
+    //添加玩家服务器重载时
+    public static void addPlayer(PlayerData playerData){
+        professionHashMap.get(playerData.profession).addPlayer(playerData);
     }
 
-    private PlayerData createNewData(Player player,String profession){
-        playerProfession.put(player.getUniqueId(),profession);
-        return new PlayerData(player.getName(),0,0,true,profession,player.getUniqueId());
-    }
-
-    private Profession getProfessionClass(String profession){
-        if(profession.equalsIgnoreCase("miner")){
-            return miner;
-        }else if(profession.equalsIgnoreCase("enchanter")){
-            return enchanter;
-        }
-        return null;
-    }
-
-    private boolean checkList(String profession){
-        return profession.equalsIgnoreCase("miner") || profession.equalsIgnoreCase("enchanter");
+    //获得所有playerData
+    public static HashMap<String,PlayerData> getPlayerDataList(){
+        HashMap<String,PlayerData> playerDataList = new HashMap<>();
+        professionHashMap.forEach(((string, profession) -> {
+            playerDataList.putAll(profession.getPlayerList());
+        }));
+        return playerDataList;
     }
 }

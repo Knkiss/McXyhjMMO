@@ -5,3 +5,8 @@ api-version: 1.16
 authors: [ Knkiss, Dnkiss ]
 description: A RpgMMO For Minecraft From XYHJ
 website: mcxyhj.cn
+
+commands:
+  mmo:
+    description: 查看关于星夜幻境MMO插件的使用
+    usage: /mmo help

@@ -4,23 +4,24 @@ import mcxyhj.cn.knkiss.config.PlayerData;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class Profession{
-    String proName;
-    HashMap<UUID, PlayerData> playerList;
+    private String proName;
+    private HashMap<String, PlayerData> playerList;
 
     public Profession(String proName){
         this.proName = proName;
         playerList = new HashMap<>();
     }
 
-    public void addPlayer(PlayerData playerData){
-        playerList.put(playerData.getPlayerUUID(),playerData);
+    public HashMap<String, PlayerData> getPlayerList(){
+        return playerList;
     }
 
-    public void removePlayer(PlayerData playerData){
-        playerList.remove(playerData.getPlayerUUID());
+    public void addPlayer(PlayerData playerData){
+        playerList.put(playerData.name,playerData);
     }
 
     public abstract void onCommand(Player player, String[] args);
