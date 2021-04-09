@@ -11,7 +11,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class Enchanter extends Profession implements Listener {
     public Enchanter() {
         super("附魔师");
-        Bukkit.getPluginManager().registerEvents(this, Manager.plugin);
     }
 
     @Override
@@ -19,8 +18,4 @@ public class Enchanter extends Profession implements Listener {
 
     }
 
-    @EventHandler
-    public void onPlayerBreakBlock(BlockBreakEvent e){
-
-    }
 }

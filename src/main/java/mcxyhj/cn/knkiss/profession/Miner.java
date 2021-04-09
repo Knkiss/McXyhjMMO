@@ -11,7 +11,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class Miner extends Profession implements Listener {
     public Miner() {
         super("矿工");
-        Bukkit.getPluginManager().registerEvents(this, Manager.plugin);
     }
 
     @Override
@@ -21,6 +20,9 @@ public class Miner extends Profession implements Listener {
 
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent e){
-        if(e.getBlock().getType().equals(Material.DIAMOND_ORE));
+        if(!this.hasPlayer(e.getPlayer().getName()))return;
+        if(e.getBlock().getType().equals(Material.STONE)){
+            addExp(e.getPlayer().getName(),7);
+        }
     }
 }

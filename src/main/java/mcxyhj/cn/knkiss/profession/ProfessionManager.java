@@ -35,6 +35,13 @@ public class ProfessionManager {
          */
     }
 
+    //重置所有playerData的change机会
+    public static void reset(){
+        professionHashMap.forEach((s, profession) -> {
+            profession.reset();
+        });
+    }
+
     //是否为正确职业
     public static boolean isRightProfession(String professionName){
         return professionHashMap.containsKey(professionName.toLowerCase());

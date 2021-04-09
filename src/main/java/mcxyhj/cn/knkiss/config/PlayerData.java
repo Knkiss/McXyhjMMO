@@ -12,4 +12,16 @@ public class PlayerData {
         this.exp = exp;
         this.change = change;
     }
+
+    public void addExp(int number){
+        exp = exp + number;
+        while(level<PluginData.maxLevel && exp>=getExpMaxThisLevel()){
+            level++;
+            exp = exp - getExpMaxThisLevel();
+        }
+    }
+
+    public int getExpMaxThisLevel(){
+        return 100;
+    }
 }

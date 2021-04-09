@@ -28,7 +28,7 @@ public class ConfigManager {
         saveDefaultConfig();
         dataConfig = getCustomConfig();
         config = getDefaultConfig();
-        PluginData.maxLevel = config.getInt("maxLevel");
+        ConfigManager.loadPluginData();
     }
 
     public static void checkOnReload(){
@@ -54,6 +54,12 @@ public class ConfigManager {
             dataConfig.set(path+".change",playerData.change);
         });
         saveCustomConfig();
+    }
+
+    //读取插件配置config
+    private static void loadPluginData(){
+        PluginData.maxLevel = config.getInt("maxLevel");
+        PluginData.debug = config.getBoolean("debug");
     }
 
     //通用函数

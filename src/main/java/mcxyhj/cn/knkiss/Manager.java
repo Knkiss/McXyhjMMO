@@ -42,8 +42,18 @@ public class Manager implements CommandExecutor, Listener {
             if(args.length>=1){
                 if(args[0].equalsIgnoreCase("admin")){
                     if(args.length>=2){
+                        if(args[1].equalsIgnoreCase("reset")){
+                            ProfessionManager.reset();
+                            sender.sendMessage("所有人的选择权已重置");
+                            return true;
+                        }
+                        if(!PluginData.debug){
+                            sender.sendMessage("将config中的debug更改为TRUE以使用此功能");
+                            return true;
+                        }
                         if(args[1].equalsIgnoreCase("debug")){
                             debugInfo(sender);
+                            sender.sendMessage("以上为xyhjMMO插件所有信息");
                             return true;
                         }
                         if(args[1].equalsIgnoreCase("clear")){
@@ -51,8 +61,8 @@ public class Manager implements CommandExecutor, Listener {
                             ProfessionManager.professionHashMap.forEach((s, profession) -> {
                                 profession.playerList.clear();
                             });
-
                             ConfigManager.clearAllData();
+                            sender.sendMessage("已清空插件的所有数据");
                             return true;
                         }
                     }
@@ -92,8 +102,11 @@ public class Manager implements CommandExecutor, Listener {
                         }
                     }
                 }
+            }else if(args[0].equalsIgnoreCase("gui")){
+                ProfessionManager.excuteCommand(player,args);
+                player.sendMessage("已分配到ProfessionManager进行指令处理");
+                return true;
             }
-            //ProfessionManager.excuteCommand(player,args);
         }
         sendHelp(sender);
         return true;
@@ -110,8 +123,8 @@ public class Manager implements CommandExecutor, Listener {
 
     private void debugInfo(CommandSender sender){
         sender.sendMessage("-------------PluginData Check-------------");
-        sender.sendMessage("MaxLevel = "+PluginData.maxLevel);
-
+        sender.sendMessage("maxLevel = "+PluginData.maxLevel);
+        sender.sendMessage("debug = "+PluginData.debug);
         sender.sendMessage("-------------ProfessionManager Check-------");
         sender.sendMessage(ProfessionManager.playerProfession.toString());
 
