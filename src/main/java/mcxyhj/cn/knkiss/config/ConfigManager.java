@@ -16,6 +16,13 @@ public class ConfigManager {
     private static File file = null;
     private static FileConfiguration config = null;
 
+    //debug
+    public static void clearAllData(){
+        Manager.plugin.saveResource("data.yml", true);
+        dataFile = new File(Manager.plugin.getDataFolder(), "data.yml");
+        dataConfig = YamlConfiguration.loadConfiguration(dataFile);
+    }
+
     //启动加载 重载读取 关闭保存
     public static void loadOnEnable(){
         saveDefaultConfig();
@@ -62,7 +69,14 @@ public class ConfigManager {
     }
 
     public static void playerQuit(String path){
-        
+        if(ProfessionManager.hasPlayer(path)){
+            PlayerData playerData = ProfessionManager.removePlayer(path);
+            dataConfig.set(path+".level",playerData.level);
+            dataConfig.set(path+".exp",playerData.exp);
+            dataConfig.set(path+".profession",playerData.profession);
+            dataConfig.set(path+".change",playerData.change);
+            saveCustomConfig();
+        }
     }
 
     //配置文件默认方法 不必更改

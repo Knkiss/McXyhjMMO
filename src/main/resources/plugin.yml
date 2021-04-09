@@ -7,6 +7,7 @@ description: A RpgMMO For Minecraft From XYHJ
 website: mcxyhj.cn
 
 commands:
-  mmo:
+  xyhjmmo:
     description: 查看关于星夜幻境MMO插件的使用
-    usage: /mmo help
+    usage: /xyhjmmo
+    aliases: mmo

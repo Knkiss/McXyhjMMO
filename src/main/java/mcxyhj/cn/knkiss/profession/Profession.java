@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class Profession{
-    private String proName;
-    private HashMap<String, PlayerData> playerList;
+    public final String proName;
+    public final HashMap<String, PlayerData> playerList;
 
     public Profession(String proName){
         this.proName = proName;
@@ -22,6 +22,16 @@ public abstract class Profession{
 
     public void addPlayer(PlayerData playerData){
         playerList.put(playerData.name,playerData);
+    }
+
+    public PlayerData getPlayerData(String name){
+        return playerList.get(name);
+    }
+
+    public PlayerData removePlayerData(String name){
+        PlayerData playerData =  playerList.get(name);
+        playerList.remove(name);
+        return playerData;
     }
 
     public abstract void onCommand(Player player, String[] args);

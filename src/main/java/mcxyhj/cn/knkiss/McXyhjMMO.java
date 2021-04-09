@@ -11,7 +11,7 @@ public final class McXyhjMMO extends JavaPlugin {
     public void onEnable() {
         getLogger().info("星夜幻境MMO开始使用");
         m = new Manager(this);
-        Objects.requireNonNull(getCommand("mmo")).setExecutor(m);
+        Objects.requireNonNull(getCommand("xyhjmmo")).setExecutor(m);
 
         if(!getServer().getOnlinePlayers().isEmpty()){
             getLogger().info("星夜幻境MMO正在重载信息");
