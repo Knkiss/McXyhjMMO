@@ -15,24 +15,9 @@ public class ProfessionManager {
         professionHashMap.put("enchanter",new Enchanter());
     }
 
-
-    public static void excuteCommand(Player player, String[] args){
-        /*
-        if(!playerProfession.containsKey(player.getName()) && args.length>=2 && args[0].equalsIgnoreCase("select")){
-            if(checkList(args[1].toLowerCase()))
-                Objects.requireNonNull(getProfession(args[1].toLowerCase())).addPlayer(createNewData(player,args[1].toLowerCase()));
-            else player.sendMessage("Please select a right profession");
-            return;
-        }
-        if(!playerProfession.containsKey(player.getName()) && args.length>=2 && args[0].equalsIgnoreCase("change")){
-            if(checkList(args[1].toLowerCase()));
-                //TODO 切换职业
-            else player.sendMessage("Please select a right profession");
-            return;
-        }
-
-        Objects.requireNonNull(getProfession(playerProfession.get(player.getName()))).onCommand(player,args);
-         */
+    //打开对应职业类的GUI
+    public static void openGUI(Player player){
+        professionHashMap.get(playerProfession.get(player.getName())).openGUI(player);
     }
 
     //重置所有playerData的change机会

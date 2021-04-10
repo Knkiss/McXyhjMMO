@@ -1,5 +1,6 @@
 package mcxyhj.cn.knkiss;
 
+import mcxyhj.cn.knkiss.assests.AssestsManager;
 import mcxyhj.cn.knkiss.config.ConfigManager;
 import mcxyhj.cn.knkiss.config.PlayerData;
 import mcxyhj.cn.knkiss.config.PluginData;
@@ -22,6 +23,7 @@ public class Manager implements CommandExecutor, Listener {
     public Manager(Plugin plugin){
         Manager.plugin = plugin;
         Manager.logger = plugin.getLogger();
+        AssestsManager.loadOnEnable();
         ProfessionManager.loadOnEnable();
         ConfigManager.loadOnEnable();
         Bukkit.getPluginManager().registerEvents(new ManageListener(), Manager.plugin);
@@ -103,8 +105,15 @@ public class Manager implements CommandExecutor, Listener {
                     }
                 }
             }else if(args[0].equalsIgnoreCase("gui")){
-                ProfessionManager.excuteCommand(player,args);
-                player.sendMessage("已分配到ProfessionManager进行指令处理");
+                ProfessionManager.openGUI(player);
+                return true;
+            }else if(args[0].equalsIgnoreCase("info")){
+                PlayerData pd = ProfessionManager.getPlayer(player.getName());
+                player.sendMessage("XyhjMMO玩家信息:"+player.getName());
+                player.sendMessage("职业:"+pd.profession);
+                player.sendMessage("等级:"+pd.level);
+                player.sendMessage("经验值:"+pd.exp);
+                player.sendMessage("可更换？"+pd.change);
                 return true;
             }
         }

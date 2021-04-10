@@ -10,12 +10,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class Miner extends Profession implements Listener {
     public Miner() {
-        super("矿工");
+        super("矿工",1);
     }
 
     @Override
-    public void onCommand(Player player, String[] args) {
-
+    public void initGUI() {
+        
     }
 
     @EventHandler
