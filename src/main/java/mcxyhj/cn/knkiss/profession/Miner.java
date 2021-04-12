@@ -1,9 +1,6 @@
 package mcxyhj.cn.knkiss.profession;
 
-import mcxyhj.cn.knkiss.Manager;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;

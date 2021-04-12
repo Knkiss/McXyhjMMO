@@ -22,9 +22,7 @@ public class ProfessionManager {
 
     //重置所有playerData的change机会
     public static void reset(){
-        professionHashMap.forEach((s, profession) -> {
-            profession.reset();
-        });
+        professionHashMap.forEach((s, profession) -> profession.reset());
     }
 
     //是否为正确职业
@@ -58,9 +56,7 @@ public class ProfessionManager {
     //ConfigManager获得所有playerData
     public static HashMap<String,PlayerData> getPlayerDataList(){
         HashMap<String,PlayerData> playerDataList = new HashMap<>();
-        professionHashMap.forEach(((string, profession) -> {
-            playerDataList.putAll(profession.getPlayerList());
-        }));
+        professionHashMap.forEach(((string, profession) -> playerDataList.putAll(profession.getPlayerList())));
         return playerDataList;
     }
 }

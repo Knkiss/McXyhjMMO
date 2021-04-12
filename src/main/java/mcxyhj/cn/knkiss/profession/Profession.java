@@ -1,7 +1,8 @@
 package mcxyhj.cn.knkiss.profession;
 
 import mcxyhj.cn.knkiss.Manager;
-import mcxyhj.cn.knkiss.assests.itemStackData;
+import mcxyhj.cn.knkiss.gui.GuiData;
+import mcxyhj.cn.knkiss.gui.ItemData;
 import mcxyhj.cn.knkiss.config.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,7 +19,8 @@ public abstract class Profession implements Listener {
     public final String proName;
     public final HashMap<String, PlayerData> playerList;
     public List<Inventory> guiList = new LinkedList<>();
-    private int slot = 0,gui = 0,guiMax;
+    public HashMap<Integer,GuiData> guiDataHashMap = new HashMap<>();
+    int guiMax;
 
     public Profession(String proName,int guiNumber){
         this.proName = proName;
@@ -34,46 +35,52 @@ public abstract class Profession implements Listener {
     private void createGUI(int guiNumber){
         for(int i=0;i<guiNumber;i++){
             Inventory gui = Bukkit.createInventory(null,54,proName+" 第"+(i+1)+"页");
-            if(i!=0)gui.setItem(45,itemStackData.lastPage);
-            if(i<guiNumber-1)gui.setItem(53,itemStackData.nextPage);
+            if(i!=0)gui.setItem(45, ItemData.lastPage);
+            if(i<guiNumber-1)gui.setItem(53, ItemData.nextPage);
             guiList.add(gui);
         }
     }
 
-    //不按顺序直接添加物品 和setItem冲突
-    public void addItem(ItemStack itemStack){
-        if(gui>guiMax) return;
-        guiList.get(gui).setItem(slot,itemStack);
-        slot++;
-        if(slot==45){
-            slot = 0;
-            gui ++;
-        }
-    }
-
-    //指定位置物品，和addItem冲突 selectgui>0
-    public void setItem(ItemStack itemStack,int selectGUI,int hang,int lie){
+    //将按钮添加到对应gui中，若重复会被替换
+    public void setItem(GuiData guiData,int selectGUI,int hang,int lie){
         if(selectGUI-1>guiMax||selectGUI-1<0)return;
         if(hang>5||hang<0)return;
         if(lie>9||lie<0)return;
         int slot = (hang-1)*9 + (lie-1);
-        guiList.get(selectGUI-1).setItem(slot,itemStack);
+        guiList.get(selectGUI-1).setItem(slot,guiData.icon);
+        int id = selectGUI*100+(hang-1)*9+(lie-1);
+        if(guiDataHashMap.containsKey(id))guiDataHashMap.replace(id,guiData);
+        else guiDataHashMap.put(id,guiData);
     }
 
-    //子类调用此函数进行统一检测
+
+    @EventHandler
+    public void onInteractGui(InventoryClickEvent e){
+        if(checkGui(e))return;
+        Player player = (Player)e.getWhoClicked();
+        int slot = e.getSlot();
+
+        for(int i = 0;i<=this.guiMax;i++){
+            if(e.getInventory().equals(guiList.get(i))){
+                guiDataHashMap.get((i+1)*100+slot).onClick(player);
+            }
+        }
+    }
+
+    //上边的函数调用此函数进行检测
     public boolean checkGui(InventoryClickEvent e){
         if(guiList.contains(e.getInventory()))e.setCancelled(true);
         if(e.getCurrentItem() == null) return true;
         Player player = (Player)e.getWhoClicked();
-        int slot = e.getSlot();
+        int slot = e.getRawSlot();
 
         if(slot == 45){
-            openGUI(player,guiList.indexOf(e.getInventory())-1);
+            openGUI(player, Math.max(guiList.indexOf(e.getInventory()) - 1, 0));
             return true;
         }else if(slot == 53){
             openGUI(player,guiList.indexOf(e.getInventory())+1);
             return true;
-        }
+        }else if(slot>53)return true;
         return false;
     }
 
@@ -111,9 +118,7 @@ public abstract class Profession implements Listener {
 
     //重置change机会
     public void reset(){
-        playerList.forEach((s, playerData) -> {
-            playerData.change = true;
-        });
+        playerList.forEach((s, playerData) -> playerData.change = true);
     }
 
     //打开gui

@@ -11,10 +11,13 @@ import java.io.IOException;
 
 public class ConfigManager {
 
+    private static File messagefile = null;
+    public static FileConfiguration messageConfig = null;
     private static File dataFile = null;
-    private static FileConfiguration dataConfig = null;
+    public static FileConfiguration dataConfig = null;
     private static File file = null;
-    private static FileConfiguration config = null;
+    public static FileConfiguration config = null;
+
 
     //debug
     public static void clearAllData(){
@@ -28,7 +31,9 @@ public class ConfigManager {
         saveDefaultConfig();
         dataConfig = getCustomConfig();
         config = getDefaultConfig();
-        ConfigManager.loadPluginData();
+        messageConfig = getMessageConfig();
+        PluginData.loadPluginData();
+        MessageData.loadMessageData();
     }
 
     public static void checkOnReload(){
@@ -56,12 +61,6 @@ public class ConfigManager {
         saveCustomConfig();
     }
 
-    //读取插件配置config
-    private static void loadPluginData(){
-        PluginData.maxLevel = config.getInt("maxLevel");
-        PluginData.debug = config.getBoolean("debug");
-    }
-
     //通用函数
     public static void playerJoin(String path){
         if(!dataConfig.contains(path+".level"))return;
@@ -87,9 +86,13 @@ public class ConfigManager {
 
     //配置文件默认方法 不必更改
     private static void saveDefaultConfig() {
-        if (dataFile == null || file == null) {
+        if (dataFile == null || file == null || messagefile == null) {
+            messagefile = new File(Manager.plugin.getDataFolder(), "message.yml");
             dataFile = new File(Manager.plugin.getDataFolder(), "data.yml");
             file = new File(Manager.plugin.getDataFolder(), "config.yml");
+        }
+        if (!messagefile.exists()) {
+            Manager.plugin.saveResource("message.yml", false);
         }
         if (!dataFile.exists()) {
             Manager.plugin.saveResource("data.yml", false);
@@ -118,6 +121,16 @@ public class ConfigManager {
             dataConfig = YamlConfiguration.loadConfiguration(dataFile);
         }
         return dataConfig;
+    }
+
+    private static FileConfiguration getMessageConfig() {
+        if (messageConfig == null) {
+            if (messagefile == null) {
+                messagefile = new File(Manager.plugin.getDataFolder(), "message.yml");
+            }
+            messageConfig = YamlConfiguration.loadConfiguration(messagefile);
+        }
+        return messageConfig;
     }
 
     private static FileConfiguration getDefaultConfig() {

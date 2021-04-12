@@ -1,6 +1,7 @@
 package mcxyhj.cn.knkiss;
 
-import mcxyhj.cn.knkiss.assests.AssestsManager;
+import mcxyhj.cn.knkiss.config.MessageData;
+import mcxyhj.cn.knkiss.gui.GuiManager;
 import mcxyhj.cn.knkiss.config.ConfigManager;
 import mcxyhj.cn.knkiss.config.PlayerData;
 import mcxyhj.cn.knkiss.config.PluginData;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class Manager implements CommandExecutor, Listener {
@@ -23,7 +23,7 @@ public class Manager implements CommandExecutor, Listener {
     public Manager(Plugin plugin){
         Manager.plugin = plugin;
         Manager.logger = plugin.getLogger();
-        AssestsManager.loadOnEnable();
+        GuiManager.loadOnEnable();
         ProfessionManager.loadOnEnable();
         ConfigManager.loadOnEnable();
         Bukkit.getPluginManager().registerEvents(new ManageListener(), Manager.plugin);
@@ -40,7 +40,7 @@ public class Manager implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         //控制台
-        if(!(sender instanceof Player) || (((Player)sender).isOp())){
+        if(!(sender instanceof Player) || (sender.isOp())){
             if(args.length>=1){
                 if(args[0].equalsIgnoreCase("admin")){
                     if(args.length>=2){
@@ -60,9 +60,7 @@ public class Manager implements CommandExecutor, Listener {
                         }
                         if(args[1].equalsIgnoreCase("clear")){
                             ProfessionManager.playerProfession.clear();
-                            ProfessionManager.professionHashMap.forEach((s, profession) -> {
-                                profession.playerList.clear();
-                            });
+                            ProfessionManager.professionHashMap.forEach((s, profession) -> profession.playerList.clear());
                             ConfigManager.clearAllData();
                             sender.sendMessage("已清空插件的所有数据");
                             return true;
@@ -105,15 +103,22 @@ public class Manager implements CommandExecutor, Listener {
                     }
                 }
             }else if(args[0].equalsIgnoreCase("gui")){
-                ProfessionManager.openGUI(player);
+                if(ProfessionManager.hasPlayer(player.getName())) ProfessionManager.openGUI(player);
+                else{
+                    player.sendMessage("请先选择职业，可选择的职业有:");
+                    ProfessionManager.professionHashMap.forEach((s, profession) -> player.sendMessage(s));
+                }
                 return true;
             }else if(args[0].equalsIgnoreCase("info")){
-                PlayerData pd = ProfessionManager.getPlayer(player.getName());
-                player.sendMessage("XyhjMMO玩家信息:"+player.getName());
-                player.sendMessage("职业:"+pd.profession);
-                player.sendMessage("等级:"+pd.level);
-                player.sendMessage("经验值:"+pd.exp);
-                player.sendMessage("可更换？"+pd.change);
+                if(!ProfessionManager.hasPlayer(player.getName())) player.sendMessage("你还没有选择职业，没有你的信息");
+                else{
+                    PlayerData pd = ProfessionManager.getPlayer(player.getName());
+                    player.sendMessage("XyhjMMO玩家信息:"+player.getName());
+                    player.sendMessage("职业:"+pd.profession);
+                    player.sendMessage("等级:"+pd.level);
+                    player.sendMessage("经验值:"+pd.exp);
+                    player.sendMessage("可更换:"+(pd.change?"是":"否"));
+                }
                 return true;
             }
         }
@@ -122,11 +127,22 @@ public class Manager implements CommandExecutor, Listener {
     }
 
     private void sendHelp(CommandSender sender){
-        //TODO 帮助界面
         if(sender instanceof Player){
-            sender.sendMessage("HELP INFO");
+            sender.sendMessage("-----XyhjMMO PLAYER HELP-----");
+            sender.sendMessage("/mmo select <profession> 选择职业");
+            sender.sendMessage("/mmo gui 打开对应职业界面");
+            sender.sendMessage("/mmo info 查看个人信息");
+            if(sender.isOp()){
+                sender.sendMessage("-----XyhjMMO ADMIN HELP-----");
+                sender.sendMessage("/mmo admin reset 重置所有玩家的选择机会");
+                sender.sendMessage("/mmo admin debug 显示所有玩家信息");
+                sender.sendMessage("/mmo admin clear 清理所有玩家数据");
+            }
         }else{
-            logger.info("HELP INFO");
+            sender.sendMessage("-----XyhjMMO CONSOLE HELP-----");
+            sender.sendMessage("/mmo admin reset 重置所有玩家的选择机会");
+            sender.sendMessage("/mmo admin debug 显示所有玩家信息");
+            sender.sendMessage("/mmo admin clear 清理所有玩家数据");
         }
     }
 
@@ -140,13 +156,11 @@ public class Manager implements CommandExecutor, Listener {
         sender.sendMessage("-------------ProfessionList---------------");
         ProfessionManager.professionHashMap.forEach((professionName, profession) -> {
             sender.sendMessage("--------"+professionName+":");
-            profession.getPlayerList().forEach((playerName, playerData) -> {
-                sender.sendMessage(playerName+":"
-                        + " Level."+playerData.level
-                        + " exp."+playerData.exp
-                        + " canChange."+playerData.change
-                );
-            });
+            profession.getPlayerList().forEach((playerName, playerData) -> sender.sendMessage(playerName+":"
+                    + " Level."+playerData.level
+                    + " exp."+playerData.exp
+                    + " canChange."+playerData.change
+            ));
         });
     }
 }

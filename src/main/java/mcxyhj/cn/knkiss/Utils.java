@@ -1,10 +1,7 @@
 package mcxyhj.cn.knkiss;
 
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -20,6 +17,7 @@ public class Utils {
         for (ItemStack itemStack: itemStackList){
             inv.setItem(inv.first(itemStack),null);
         }
+        player.updateInventory();
         return true;
     }
 
@@ -31,10 +29,9 @@ public class Utils {
         HashMap<Integer, ItemStack> itemList = player.getInventory().addItem(itemStacks);
         if(!itemList.isEmpty()){
             player.sendMessage("背包空间不足，已掉落于地面上");
-            itemList.forEach((integer, itemStack) -> {
-                player.getWorld().dropItem(player.getLocation(),itemStack);
-            });
+            itemList.forEach((integer, itemStack) -> player.getWorld().dropItem(player.getLocation(),itemStack));
         }
+        player.updateInventory();
     }
 
     public static boolean checkItem(Player player, List<ItemStack> itemStackList){
@@ -46,15 +43,5 @@ public class Utils {
             }
         }
         return true;
-    }
-
-    public static void test(Player player){
-        PlayerInventory inventory = player.getInventory(); // 获取玩家背包列表
-        ItemStack itemstack = new ItemStack(Material.DIAMOND, 64); // 生成一组钻石
-
-        if (inventory.contains(itemstack)) {
-            inventory.remove(itemstack); // 将一组钻石放到玩家的背包里
-            player.sendMessage("Wow！你看上去很土豪啊！"); //向玩家发送消息("Wow！你看上去很土豪啊！")
-        }
     }
 }
