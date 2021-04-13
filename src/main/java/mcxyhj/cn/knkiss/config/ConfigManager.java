@@ -8,43 +8,47 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class ConfigManager {
 
-    private static File messagefile = null;
-    public static FileConfiguration messageConfig = null;
-    private static File dataFile = null;
-    public static FileConfiguration dataConfig = null;
-    private static File file = null;
-    public static FileConfiguration config = null;
-
+    private static final HashMap<String,File> fileMap = new HashMap<>();
+    public static HashMap<String,FileConfiguration> configMap = new HashMap<>();
 
     //debug
     public static void clearAllData(){
         Manager.plugin.saveResource("data.yml", true);
-        dataFile = new File(Manager.plugin.getDataFolder(), "data.yml");
-        dataConfig = YamlConfiguration.loadConfiguration(dataFile);
+        fileMap.replace("data",new File(Manager.plugin.getDataFolder(), "data.yml"));
+        configMap.replace("data",YamlConfiguration.loadConfiguration(fileMap.get("data")));
     }
 
-    //启动加载 重载读取 关闭保存
     public static void loadOnEnable(){
+        //注册文件
+        fileMap.put("config",null);
+        fileMap.put("data",null);
+        fileMap.put("item",null);
+        fileMap.put("message",null);
+        fileMap.put("profession",null);
+
+        //获取file和config
         saveDefaultConfig();
-        dataConfig = getCustomConfig();
-        config = getDefaultConfig();
-        messageConfig = getMessageConfig();
+        getAllConfig();
+
+        //调用对应类加载对应数据
         PluginData.loadPluginData();
         MessageData.loadMessageData();
+        ItemData.loadItemData();
     }
 
     public static void checkOnReload(){
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             String path = player.getName();
-            if(!dataConfig.contains(path+".level"))return;
+            if(!configMap.get("data").contains(path+".level"))return;
 
-            int level = dataConfig.getInt(path+".level");
-            int exp = dataConfig.getInt(path+".exp");
-            String profession = dataConfig.getString(path+".profession");
-            boolean change = dataConfig.getBoolean(path+".change");
+            int level = configMap.get("data").getInt(path+".level");
+            int exp = configMap.get("data").getInt(path+".exp");
+            String profession = configMap.get("data").getString(path+".profession");
+            boolean change = configMap.get("data").getBoolean(path+".change");
             PlayerData playerData = new PlayerData(path,level,exp,change,profession);
             ProfessionManager.addPlayer(playerData);
         });
@@ -53,22 +57,21 @@ public class ConfigManager {
     public static void saveOnDisable(){
         ProfessionManager.getPlayerDataList().forEach((s, playerData) -> {
             String path = playerData.name;
-            dataConfig.set(path+".level",playerData.level);
-            dataConfig.set(path+".exp",playerData.exp);
-            dataConfig.set(path+".profession",playerData.profession);
-            dataConfig.set(path+".change",playerData.change);
+            configMap.get("data").set(path+".level",playerData.level);
+            configMap.get("data").set(path+".exp",playerData.exp);
+            configMap.get("data").set(path+".profession",playerData.profession);
+            configMap.get("data").set(path+".change",playerData.change);
         });
         saveCustomConfig();
     }
 
-    //通用函数
     public static void playerJoin(String path){
-        if(!dataConfig.contains(path+".level"))return;
+        if(!configMap.get("data").contains(path+".level"))return;
 
-        int level = dataConfig.getInt(path+".level");
-        int exp = dataConfig.getInt(path+".exp");
-        String profession = dataConfig.getString(path+".profession");
-        boolean change = dataConfig.getBoolean(path+".change");
+        int level = configMap.get("data").getInt(path+".level");
+        int exp = configMap.get("data").getInt(path+".exp");
+        String profession = configMap.get("data").getString(path+".profession");
+        boolean change = configMap.get("data").getBoolean(path+".change");
         PlayerData playerData = new PlayerData(path,level,exp,change,profession);
         ProfessionManager.addPlayer(playerData);
     }
@@ -76,70 +79,37 @@ public class ConfigManager {
     public static void playerQuit(String path){
         if(ProfessionManager.hasPlayer(path)){
             PlayerData playerData = ProfessionManager.removePlayer(path);
-            dataConfig.set(path+".level",playerData.level);
-            dataConfig.set(path+".exp",playerData.exp);
-            dataConfig.set(path+".profession",playerData.profession);
-            dataConfig.set(path+".change",playerData.change);
+            configMap.get("data").set(path+".level",playerData.level);
+            configMap.get("data").set(path+".exp",playerData.exp);
+            configMap.get("data").set(path+".profession",playerData.profession);
+            configMap.get("data").set(path+".change",playerData.change);
             saveCustomConfig();
         }
     }
 
     //配置文件默认方法 不必更改
     private static void saveDefaultConfig() {
-        if (dataFile == null || file == null || messagefile == null) {
-            messagefile = new File(Manager.plugin.getDataFolder(), "message.yml");
-            dataFile = new File(Manager.plugin.getDataFolder(), "data.yml");
-            file = new File(Manager.plugin.getDataFolder(), "config.yml");
-        }
-        if (!messagefile.exists()) {
-            Manager.plugin.saveResource("message.yml", false);
-        }
-        if (!dataFile.exists()) {
-            Manager.plugin.saveResource("data.yml", false);
-        }
-        if (!file.exists()) {
-            Manager.plugin.saveResource("config.yml", false);
-        }
+        fileMap.forEach((name, file1) -> {
+            if(file1 == null){
+                fileMap.replace(name,new File(Manager.plugin.getDataFolder(), name+".yml"));
+                file1=fileMap.get(name);
+            }
+            if(!file1.exists())Manager.plugin.saveResource(name+".yml", false);
+        });
+    }
+
+    private static void getAllConfig(){
+        fileMap.forEach((name,file1) -> configMap.put(name,YamlConfiguration.loadConfiguration(file1)));
     }
 
     private static void saveCustomConfig() {
-        if (dataConfig == null || dataFile == null) {
+        if (configMap.get("data") == null || fileMap.get("data") == null) {
             return;
         }
         try {
-            dataConfig.save(dataFile);
+            configMap.get("data").save(fileMap.get("data"));
         } catch (IOException ex) {
-            Manager.plugin.getLogger().warning("Could not save config to " + dataFile);
+            Manager.plugin.getLogger().warning("Could not save config to " + fileMap.get("data"));
         }
-    }
-
-    private static FileConfiguration getCustomConfig() {
-        if (dataConfig == null) {
-            if (dataFile == null) {
-                dataFile = new File(Manager.plugin.getDataFolder(), "data.yml");
-            }
-            dataConfig = YamlConfiguration.loadConfiguration(dataFile);
-        }
-        return dataConfig;
-    }
-
-    private static FileConfiguration getMessageConfig() {
-        if (messageConfig == null) {
-            if (messagefile == null) {
-                messagefile = new File(Manager.plugin.getDataFolder(), "message.yml");
-            }
-            messageConfig = YamlConfiguration.loadConfiguration(messagefile);
-        }
-        return messageConfig;
-    }
-
-    private static FileConfiguration getDefaultConfig() {
-        if (config == null) {
-            if (file == null) {
-                file = new File(Manager.plugin.getDataFolder(), "config.yml");
-            }
-            config = YamlConfiguration.loadConfiguration(file);
-        }
-        return config;
     }
 }

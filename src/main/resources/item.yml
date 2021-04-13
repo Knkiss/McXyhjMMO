@@ -1,0 +1,6 @@
+naijiu4:
+  name: "&1耐久4"
+  lore: "&2这是一本简单的附魔书"
+  type: BOOK
+  enchant: DURABILITY
+  enchant_level: 4

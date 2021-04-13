@@ -1,10 +1,7 @@
 package mcxyhj.cn.knkiss;
 
-import mcxyhj.cn.knkiss.config.MessageData;
+import mcxyhj.cn.knkiss.config.*;
 import mcxyhj.cn.knkiss.gui.GuiManager;
-import mcxyhj.cn.knkiss.config.ConfigManager;
-import mcxyhj.cn.knkiss.config.PlayerData;
-import mcxyhj.cn.knkiss.config.PluginData;
 import mcxyhj.cn.knkiss.profession.ProfessionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -14,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collections;
 import java.util.logging.Logger;
 
 public class Manager implements CommandExecutor, Listener {
@@ -147,6 +145,7 @@ public class Manager implements CommandExecutor, Listener {
     }
 
     private void debugInfo(CommandSender sender){
+        /*
         sender.sendMessage("-------------PluginData Check-------------");
         sender.sendMessage("maxLevel = "+PluginData.maxLevel);
         sender.sendMessage("debug = "+PluginData.debug);
@@ -161,6 +160,13 @@ public class Manager implements CommandExecutor, Listener {
                     + " exp."+playerData.exp
                     + " canChange."+playerData.change
             ));
+        });
+         */
+        ItemData.itemStackHashMap.forEach((s, itemStack) -> {
+            sender.sendMessage(s+":"+itemStack.toString());
+            if(sender instanceof Player){
+                Utils.addItem((Player)sender, Collections.singletonList(itemStack));
+            }
         });
     }
 }

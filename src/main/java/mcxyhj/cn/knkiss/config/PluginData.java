@@ -5,7 +5,7 @@ public class PluginData {
     public static boolean debug;
 
     public static void loadPluginData(){
-        maxLevel = ConfigManager.config.getInt("maxLevel");
-        debug = ConfigManager.config.getBoolean("debug");
+        maxLevel = ConfigManager.configMap.get("config").getInt("maxLevel");
+        debug = ConfigManager.configMap.get("config").getBoolean("debug");
     }
 }

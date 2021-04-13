@@ -1,8 +1,8 @@
 package mcxyhj.cn.knkiss.profession;
 
 import mcxyhj.cn.knkiss.Manager;
-import mcxyhj.cn.knkiss.gui.GuiData;
-import mcxyhj.cn.knkiss.gui.ItemData;
+import mcxyhj.cn.knkiss.config.GuiDataClass;
+import mcxyhj.cn.knkiss.config.ItemData;
 import mcxyhj.cn.knkiss.config.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ public abstract class Profession implements Listener {
     public final String proName;
     public final HashMap<String, PlayerData> playerList;
     public List<Inventory> guiList = new LinkedList<>();
-    public HashMap<Integer,GuiData> guiDataHashMap = new HashMap<>();
+    public HashMap<Integer, GuiDataClass> guiDataHashMap = new HashMap<>();
     int guiMax;
 
     public Profession(String proName,int guiNumber){
@@ -42,15 +42,15 @@ public abstract class Profession implements Listener {
     }
 
     //将按钮添加到对应gui中，若重复会被替换
-    public void setItem(GuiData guiData,int selectGUI,int hang,int lie){
+    public void setItem(GuiDataClass guiDataClass, int selectGUI, int hang, int lie){
         if(selectGUI-1>guiMax||selectGUI-1<0)return;
         if(hang>5||hang<0)return;
         if(lie>9||lie<0)return;
         int slot = (hang-1)*9 + (lie-1);
-        guiList.get(selectGUI-1).setItem(slot,guiData.icon);
+        guiList.get(selectGUI-1).setItem(slot, guiDataClass.icon);
         int id = selectGUI*100+(hang-1)*9+(lie-1);
-        if(guiDataHashMap.containsKey(id))guiDataHashMap.replace(id,guiData);
-        else guiDataHashMap.put(id,guiData);
+        if(guiDataHashMap.containsKey(id))guiDataHashMap.replace(id, guiDataClass);
+        else guiDataHashMap.put(id, guiDataClass);
     }
 
 
@@ -80,8 +80,7 @@ public abstract class Profession implements Listener {
         }else if(slot == 53){
             openGUI(player,guiList.indexOf(e.getInventory())+1);
             return true;
-        }else if(slot>53)return true;
-        return false;
+        }else return slot > 53;
     }
 
     //添加经验值

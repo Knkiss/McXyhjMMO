@@ -1,4 +1,4 @@
-package mcxyhj.cn.knkiss.gui;
+package mcxyhj.cn.knkiss.config;
 
 import mcxyhj.cn.knkiss.Utils;
 import mcxyhj.cn.knkiss.profession.ProfessionManager;
@@ -11,33 +11,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GuiData {
+/*  此文件用于生成一个按钮的类
+*   其中包含按钮的图标、被点击后的验证、减少物品、给予奖励、执行指令
+* */
+
+public class GuiDataClass {
     public ItemStack icon;
-    public List<ItemStack> needList;
-    public int needLevel = 0,removeLevel = 0;;
-    public List<ItemStack> giveList;
-    public int giveExp = 0;
+    public List<ItemStack> needList,giveList;
+    public int needLevel = 0,removeLevel = 0,giveExp = 0,proLevelNeed;
 
     public List<String> commandList = new ArrayList<>();
     public List<String> commandOpList = new ArrayList<>();
 
-    public int proLevelNeed = 0;
-
-    public GuiData(int proLevelNeed, List<ItemStack> needList, List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
+    public GuiDataClass(int proLevelNeed, List<ItemStack> needList, List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
         setIcon(material,displayName,Arrays.asList(loreArrays));
         this.needList = needList;
         this.giveList = giveList;
         this.proLevelNeed = proLevelNeed;
     }
 
-    public GuiData(int proLevelNeed, List<ItemStack> needList, int needLevel , int removeLevel , List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
+    public GuiDataClass(int proLevelNeed, List<ItemStack> needList, int needLevel , int removeLevel , List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
         this(proLevelNeed,needList,giveList,material,displayName,loreArrays);
         this.needLevel = needLevel;
         if(removeLevel > needLevel) this.removeLevel = 0;
         else this.removeLevel = removeLevel;
     }
 
-    public GuiData(int proLevelNeed, List<ItemStack> needList, int giveExp , List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
+    public GuiDataClass(int proLevelNeed, List<ItemStack> needList, int giveExp , List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
         this(proLevelNeed,needList,giveList,material,displayName,loreArrays);
         this.giveExp = giveExp;
     }
