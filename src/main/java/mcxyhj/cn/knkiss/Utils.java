@@ -1,8 +1,10 @@
 package mcxyhj.cn.knkiss;
 
+import mcxyhj.cn.knkiss.config.ConfigManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -42,5 +44,29 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    public static void setNameAndLore(ItemStack item,String name, String lore){
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName(name);
+        if(lore != null){
+            List<String> loreList = new ArrayList<>();
+            loreList.add(lore);
+            itemMeta.setLore(loreList);
+        }
+        item.setItemMeta(itemMeta);
+    }
+
+    public static List<String> getStringList(Object object){
+        List<String> stringList = new ArrayList<>();
+        if(object instanceof String){
+            stringList.add((String) object);
+        }else if(object instanceof List<?>){
+            for (Object o : (List<?>) object) {
+                stringList.add((String) o);
+            }
+        }
+        return stringList;
     }
 }

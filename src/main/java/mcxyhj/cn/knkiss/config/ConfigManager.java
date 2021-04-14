@@ -35,9 +35,10 @@ public class ConfigManager {
         getAllConfig();
 
         //调用对应类加载对应数据
-        PluginData.loadPluginData();
         MessageData.loadMessageData();
+        PluginData.loadPluginData();
         ItemData.loadItemData();
+        ProfessionData.loadProfessionData();
     }
 
     public static void checkOnReload(){

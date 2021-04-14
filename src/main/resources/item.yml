@@ -1,6 +1,20 @@
 naijiu4:
   name: "&1耐久4"
-  lore: "&2这是一本简单的附魔书"
+  lore: "&2这是一本耐久4的附魔书"
   type: BOOK
   enchant: DURABILITY
   enchant_level: 4
+xiaolv6:
+  name: "&1效率6"
+  lore: "&2这是一本效率6的附魔书"
+  type: BOOK
+  enchant: DIG_SPEED
+  enchant_level: 6
+fengli6:
+  name: "&1锋利6"
+  lore:
+  - "&2这是一本锋利6的附魔书"
+  - "&4请勿用于PVP"
+  type: BOOK
+  enchant: DAMAGE_ALL
+  enchant_level: 6

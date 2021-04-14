@@ -12,7 +12,6 @@ public class ProfessionManager {
 
     public static void loadOnEnable(){
         professionHashMap.put("miner",new Miner());
-        professionHashMap.put("enchanter",new Enchanter());
     }
 
     //打开对应职业类的GUI

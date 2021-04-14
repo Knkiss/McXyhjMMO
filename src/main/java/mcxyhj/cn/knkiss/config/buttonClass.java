@@ -15,7 +15,7 @@ import java.util.List;
 *   其中包含按钮的图标、被点击后的验证、减少物品、给予奖励、执行指令
 * */
 
-public class GuiDataClass {
+public class buttonClass {
     public ItemStack icon;
     public List<ItemStack> needList,giveList;
     public int needLevel = 0,removeLevel = 0,giveExp = 0,proLevelNeed;
@@ -23,21 +23,21 @@ public class GuiDataClass {
     public List<String> commandList = new ArrayList<>();
     public List<String> commandOpList = new ArrayList<>();
 
-    public GuiDataClass(int proLevelNeed, List<ItemStack> needList, List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
+    public buttonClass(int proLevelNeed, List<ItemStack> needList, List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
         setIcon(material,displayName,Arrays.asList(loreArrays));
         this.needList = needList;
         this.giveList = giveList;
         this.proLevelNeed = proLevelNeed;
     }
 
-    public GuiDataClass(int proLevelNeed, List<ItemStack> needList, int needLevel , int removeLevel , List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
+    public buttonClass(int proLevelNeed, List<ItemStack> needList, int needLevel , int removeLevel , List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
         this(proLevelNeed,needList,giveList,material,displayName,loreArrays);
         this.needLevel = needLevel;
         if(removeLevel > needLevel) this.removeLevel = 0;
         else this.removeLevel = removeLevel;
     }
 
-    public GuiDataClass(int proLevelNeed, List<ItemStack> needList, int giveExp , List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
+    public buttonClass(int proLevelNeed, List<ItemStack> needList, int giveExp , List<ItemStack> giveList, Material material, String displayName, String...loreArrays){
         this(proLevelNeed,needList,giveList,material,displayName,loreArrays);
         this.giveExp = giveExp;
     }

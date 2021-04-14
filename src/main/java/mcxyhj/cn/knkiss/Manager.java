@@ -21,9 +21,9 @@ public class Manager implements CommandExecutor, Listener {
     public Manager(Plugin plugin){
         Manager.plugin = plugin;
         Manager.logger = plugin.getLogger();
+        ConfigManager.loadOnEnable();
         GuiManager.loadOnEnable();
         ProfessionManager.loadOnEnable();
-        ConfigManager.loadOnEnable();
         Bukkit.getPluginManager().registerEvents(new ManageListener(), Manager.plugin);
     }
 

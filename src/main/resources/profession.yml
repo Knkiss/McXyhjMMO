@@ -1,6 +1,5 @@
 enchanter:
   settings:
-    uiMax: 4
     name: "附魔师"
     info:
       - "这是附魔师的简介"
