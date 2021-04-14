@@ -22,7 +22,7 @@ public final class McXyhjMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         Utils.info("星夜幻境MMO正在关闭");
-        //m.saveOnDisable();
+        m.saveOnDisable();
     }
 
     public static void main(String[] args){}

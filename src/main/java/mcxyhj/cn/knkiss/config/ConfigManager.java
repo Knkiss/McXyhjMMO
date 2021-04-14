@@ -1,7 +1,7 @@
 package mcxyhj.cn.knkiss.config;
 
 import mcxyhj.cn.knkiss.Manager;
-import mcxyhj.cn.knkiss.profession.ProfessionManager;
+import mcxyhj.cn.knkiss.ProfessionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -51,24 +51,27 @@ public class ConfigManager {
             String profession = configMap.get("data").getString(path+".profession");
             boolean change = configMap.get("data").getBoolean(path+".change");
             PlayerData playerData = new PlayerData(path,level,exp,change,profession);
+
+
             ProfessionManager.addPlayer(playerData);
         });
     }
 
     public static void saveOnDisable(){
-        ProfessionManager.getPlayerDataList().forEach((s, playerData) -> {
-            String path = playerData.name;
-            configMap.get("data").set(path+".level",playerData.level);
-            configMap.get("data").set(path+".exp",playerData.exp);
-            configMap.get("data").set(path+".profession",playerData.profession);
-            configMap.get("data").set(path+".change",playerData.change);
+        ProfessionData.professionMap.forEach((id, profession) -> {
+            profession.playerList.forEach((s, playerData) -> {
+                String path = playerData.name;
+                configMap.get("data").set(path+".level",playerData.level);
+                configMap.get("data").set(path+".exp",playerData.exp);
+                configMap.get("data").set(path+".profession",playerData.profession);
+                configMap.get("data").set(path+".change",playerData.change);
+            });
         });
         saveCustomConfig();
     }
 
     public static void playerJoin(String path){
         if(!configMap.get("data").contains(path+".level"))return;
-
         int level = configMap.get("data").getInt(path+".level");
         int exp = configMap.get("data").getInt(path+".exp");
         String profession = configMap.get("data").getString(path+".profession");

@@ -1,18 +1,16 @@
 package mcxyhj.cn.knkiss;
 
 import mcxyhj.cn.knkiss.config.*;
-import mcxyhj.cn.knkiss.profession.ProfessionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Logger;
 
-public class Manager implements CommandExecutor, Listener {
+public class Manager implements CommandExecutor {
     public static Plugin plugin;
     public static Logger logger;
 
@@ -55,7 +53,7 @@ public class Manager implements CommandExecutor, Listener {
                         }
                         if(args[1].equalsIgnoreCase("clear")){
                             ProfessionManager.playerProfession.clear();
-                            ProfessionManager.professionHashMap.forEach((s, profession) -> profession.playerList.clear());
+                            ProfessionData.professionMap.forEach((s, profession) -> profession.playerList.clear());
                             ConfigManager.clearAllData();
                             sender.sendMessage("已清空插件的所有数据");
                             return true;
@@ -101,7 +99,7 @@ public class Manager implements CommandExecutor, Listener {
                 if(ProfessionManager.hasPlayer(player.getName())) ProfessionManager.openGUI(player);
                 else{
                     player.sendMessage("请先选择职业，可选择的职业有:");
-                    ProfessionManager.professionHashMap.forEach((s, profession) -> player.sendMessage(s));
+                    ProfessionData.professionMap.forEach((s, profession) -> player.sendMessage(s));
                 }
                 return true;
             }else if(args[0].equalsIgnoreCase("info")){

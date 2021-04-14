@@ -1,7 +1,7 @@
 package mcxyhj.cn.knkiss.template;
 
 import mcxyhj.cn.knkiss.Utils;
-import mcxyhj.cn.knkiss.profession.ProfessionManager;
+import mcxyhj.cn.knkiss.ProfessionManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

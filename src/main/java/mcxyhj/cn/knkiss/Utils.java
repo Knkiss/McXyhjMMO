@@ -1,17 +1,13 @@
 package mcxyhj.cn.knkiss;
 
-import mcxyhj.cn.knkiss.config.ConfigManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import sun.security.util.ManifestEntryVerifier;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Level;
 
 public class Utils {
     public static boolean removeItem(Player player, List<ItemStack> itemStackList){

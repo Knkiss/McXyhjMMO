@@ -1,7 +1,7 @@
-package mcxyhj.cn.knkiss.profession;
+package mcxyhj.cn.knkiss;
 
 import mcxyhj.cn.knkiss.config.PlayerData;
-import mcxyhj.cn.knkiss.template.Profession;
+import mcxyhj.cn.knkiss.config.ProfessionData;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -9,7 +9,6 @@ import java.util.HashMap;
 public class ProfessionManager {
 
     public static final HashMap<String,String> playerProfession = new HashMap<>();
-    public static final HashMap<String, Profession> professionHashMap = new HashMap<>();
 
     public static void loadOnEnable(){
 
@@ -17,17 +16,17 @@ public class ProfessionManager {
 
     //打开对应职业类的GUI
     public static void openGUI(Player player){
-        professionHashMap.get(playerProfession.get(player.getName())).openGUI(player);
+        ProfessionData.professionMap.get(playerProfession.get(player.getName())).openGUI(player);
     }
 
     //重置所有playerData的change机会
     public static void reset(){
-        professionHashMap.forEach((s, profession) -> profession.reset());
+        ProfessionData.professionMap.forEach((s, profession) -> profession.reset());
     }
 
     //是否为正确职业
     public static boolean isRightProfession(String professionName){
-        return professionHashMap.containsKey(professionName.toLowerCase());
+        return ProfessionData.professionMap.containsKey(professionName.toLowerCase());
     }
 
     //玩家是否有数据
@@ -37,12 +36,12 @@ public class ProfessionManager {
 
     //获取玩家数据
     public static PlayerData getPlayer(String name){
-        return professionHashMap.get(playerProfession.get(name)).getPlayerData(name);
+        return ProfessionData.professionMap.get(playerProfession.get(name)).getPlayerData(name);
     }
 
     //添加玩家
     public static void addPlayer(PlayerData playerData){
-        professionHashMap.get(playerData.profession).addPlayer(playerData);
+        ProfessionData.professionMap.get(playerData.profession).addPlayer(playerData);
         playerProfession.put(playerData.name,playerData.profession);
     }
 
@@ -50,13 +49,13 @@ public class ProfessionManager {
     public static PlayerData removePlayer(String name){
         String profession = playerProfession.get(name);
         playerProfession.remove(name);
-        return professionHashMap.get(profession).removePlayerData(name);
+        return ProfessionData.professionMap.get(profession).removePlayerData(name);
     }
 
     //ConfigManager获得所有playerData
     public static HashMap<String,PlayerData> getPlayerDataList(){
         HashMap<String,PlayerData> playerDataList = new HashMap<>();
-        professionHashMap.forEach(((string, profession) -> playerDataList.putAll(profession.getPlayerList())));
+        ProfessionData.professionMap.forEach(((string, profession) -> playerDataList.putAll(profession.getPlayerList())));
         return playerDataList;
     }
 }
