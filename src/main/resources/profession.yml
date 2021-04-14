@@ -6,6 +6,9 @@ enchanter:
       - "附魔物品获得经验值，高等级可制作特殊附魔书"
   gui:
     button1:
+      uiNumber: 1
+      slot: 40
+      type: BOOK
       displayName: "&1耐久4"
       lore: "耐久4"
       proLevelNeed: 0 #职业等级要求
@@ -13,9 +16,26 @@ enchanter:
       removeLevel: 1 #游戏等级减少 (与经验值给予冲突)
       giveExp: 10 #经验值给予 (与游戏等级冲突)
       needList:
-        - "GOLD_BLOCK * 1" #原版则 "MATERIAL * Number"
+        - "GOLD_BLOCK,1" #原版则 "MATERIAL,Number"
       giveList:
-        - "@naijiu4" #特殊物品则 "@item.yml中的key"
+        - "@naijiu4,2" #特殊物品则 "@item.yml中的key,Number"
       commands:
         - "say 这是玩家指令"
         - "[OP]say 这是OP指令"
+    button2:
+      uiNumber: 2
+      slot: 9
+      type: BOOK
+      displayName: "&2耐久6"
+      lore:
+        - "&3效率6"
+      proLevelNeed: 1 #职业等级要求
+      needLevel: 0 #游戏等级要求 (与经验值给予冲突)
+      removeLevel: 0 #游戏等级减少 (与经验值给予冲突)
+      giveExp: 0 #经验值给予 (与游戏等级冲突)
+      needList:
+        - "IRON_BLOCK,5" #原版则 "MATERIAL,Number"
+      giveList:
+        - "@xiaolv6,1" #特殊物品则 "@item.yml中的key,Number"
+      commands:
+        - "say 这次只有玩家指令"

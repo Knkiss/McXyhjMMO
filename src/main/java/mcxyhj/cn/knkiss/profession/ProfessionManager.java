@@ -1,6 +1,7 @@
 package mcxyhj.cn.knkiss.profession;
 
 import mcxyhj.cn.knkiss.config.PlayerData;
+import mcxyhj.cn.knkiss.template.Profession;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -8,10 +9,10 @@ import java.util.HashMap;
 public class ProfessionManager {
 
     public static final HashMap<String,String> playerProfession = new HashMap<>();
-    public static final HashMap<String,Profession> professionHashMap = new HashMap<>();
+    public static final HashMap<String, Profession> professionHashMap = new HashMap<>();
 
     public static void loadOnEnable(){
-        professionHashMap.put("miner",new Miner());
+
     }
 
     //打开对应职业类的GUI

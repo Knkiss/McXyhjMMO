@@ -9,20 +9,20 @@ public final class McXyhjMMO extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("星夜幻境MMO开始使用");
         m = new Manager(this);
-        Objects.requireNonNull(getCommand("xyhjmmo")).setExecutor(m);
 
+        Utils.info("星夜幻境MMO开始使用");
+        Objects.requireNonNull(getCommand("xyhjmmo")).setExecutor(m);
         if(!getServer().getOnlinePlayers().isEmpty()){
-            getLogger().info("星夜幻境MMO正在重载信息");
+            Utils.info("星夜幻境MMO正在重载信息");
             m.checkOnReload();//重载且存在玩家时检查
         }
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("星夜幻境MMO正在关闭");
-        m.saveOnDisable();
+        Utils.info("星夜幻境MMO正在关闭");
+        //m.saveOnDisable();
     }
 
     public static void main(String[] args){}

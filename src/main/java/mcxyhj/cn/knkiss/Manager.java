@@ -1,7 +1,6 @@
 package mcxyhj.cn.knkiss;
 
 import mcxyhj.cn.knkiss.config.*;
-import mcxyhj.cn.knkiss.gui.GuiManager;
 import mcxyhj.cn.knkiss.profession.ProfessionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -11,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Collections;
 import java.util.logging.Logger;
 
 public class Manager implements CommandExecutor, Listener {
@@ -22,7 +20,6 @@ public class Manager implements CommandExecutor, Listener {
         Manager.plugin = plugin;
         Manager.logger = plugin.getLogger();
         ConfigManager.loadOnEnable();
-        GuiManager.loadOnEnable();
         ProfessionManager.loadOnEnable();
         Bukkit.getPluginManager().registerEvents(new ManageListener(), Manager.plugin);
     }
@@ -145,28 +142,8 @@ public class Manager implements CommandExecutor, Listener {
     }
 
     private void debugInfo(CommandSender sender){
-        /*
-        sender.sendMessage("-------------PluginData Check-------------");
-        sender.sendMessage("maxLevel = "+PluginData.maxLevel);
-        sender.sendMessage("debug = "+PluginData.debug);
-        sender.sendMessage("-------------ProfessionManager Check-------");
-        sender.sendMessage(ProfessionManager.playerProfession.toString());
-
-        sender.sendMessage("-------------ProfessionList---------------");
-        ProfessionManager.professionHashMap.forEach((professionName, profession) -> {
-            sender.sendMessage("--------"+professionName+":");
-            profession.getPlayerList().forEach((playerName, playerData) -> sender.sendMessage(playerName+":"
-                    + " Level."+playerData.level
-                    + " exp."+playerData.exp
-                    + " canChange."+playerData.change
-            ));
-        });
-         */
-        ItemData.itemStackHashMap.forEach((s, itemStack) -> {
-            sender.sendMessage(s+":"+itemStack.toString());
-            if(sender instanceof Player){
-                Utils.addItem((Player)sender, Collections.singletonList(itemStack));
-            }
-        });
+        //MessageData.debug(sender);
+        //ItemData.debug(sender);
+        ProfessionData.debug(sender);
     }
 }
