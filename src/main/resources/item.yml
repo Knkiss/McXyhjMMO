@@ -1,14 +1,30 @@
+#enchant_template:
+#  name: "&3附魔书模板"
+#  lore: "&2描述可用字符串列表，也可用字符串"
+#  type: BOOK
+#  enchant: unbreaking
+#  enchant_level: 3
+
+#potion_template:
+#  name: "&a药水模板"
+#  lore:
+#    - "&2描述可用字符串列表，也可用字符串"
+#  type: "POTION"
+#  potion: FAST_DIGGING
+#  potion_level: 2
+#  potion_time: 600 #ticks
+
 naijiu4:
   name: "&1耐久4"
   lore: "&2这是一本耐久4的附魔书"
   type: BOOK
-  enchant: durability
+  enchant: unbreaking
   enchant_level: 4
 xiaolv6:
   name: "&1效率6"
   lore: "&2这是一本效率6的附魔书"
   type: "BOOK"
-  enchant: dig_speed
+  enchant: efficiency
   enchant_level: 6
 fengli6:
   name: "&1锋利6"
@@ -16,5 +32,21 @@ fengli6:
     - "&2这是一本锋利6的附魔书"
     - "&4请勿用于PVP"
   type: "BOOK"
-  enchant: damage_all
+  enchant: sharpness
   enchant_level: 6
+jipo1:
+  name: "&a急迫1"
+  lore:
+    - "&4挖矿提升UP!UP!UP!"
+  type: "POTION"
+  potion: FAST_DIGGING
+  potion_level: 1
+  potion_time: 600 #ticks
+jipo2:
+  name: "&a急迫2"
+  lore:
+    - "&4挖矿提升UP!UP!UP!"
+  type: "POTION"
+  potion: FAST_DIGGING
+  potion_level: 2
+  potion_time: 600 #ticks

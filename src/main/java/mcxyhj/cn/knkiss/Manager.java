@@ -18,7 +18,6 @@ public class Manager implements CommandExecutor {
         Manager.plugin = plugin;
         Manager.logger = plugin.getLogger();
         ConfigManager.loadOnEnable();
-        ProfessionManager.loadOnEnable();
         Bukkit.getPluginManager().registerEvents(new ManageListener(), Manager.plugin);
     }
 
@@ -141,7 +140,7 @@ public class Manager implements CommandExecutor {
 
     private void debugInfo(CommandSender sender){
         //MessageData.debug(sender);
-        //ItemData.debug(sender);
-        ProfessionData.debug(sender);
+        ItemData.debug(sender);
+        //ProfessionData.debug(sender);
     }
 }

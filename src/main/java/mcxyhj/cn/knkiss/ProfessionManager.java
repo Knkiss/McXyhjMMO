@@ -10,8 +10,8 @@ public class ProfessionManager {
 
     public static final HashMap<String,String> playerProfession = new HashMap<>();
 
-    public static void loadOnEnable(){
-
+    public static void giveProExp(String name,int proExp){
+        ProfessionData.professionMap.get(playerProfession.get(name)).addExp(name,proExp);
     }
 
     //打开对应职业类的GUI

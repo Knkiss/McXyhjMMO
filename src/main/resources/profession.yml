@@ -1,3 +1,29 @@
+#profession_template:
+#  settings:
+#    name: "职业模板"
+#    info:
+#      - "&b介绍可用字符串，也可用列表"
+#      - "&c将在职业信息展示时"
+#  gui:
+#    button_template:
+#      uiNumber: 1 #>=1
+#      slot: 40 #0-43
+#      type: BOOK
+#      displayName: "&1耐久4"
+#      lore: "耐久4"
+#      proLevelNeed: 0 #职业等级要求
+#      needLevel: 3 #游戏等级要求(可选)
+#      removeLevel: 1 #游戏等级减少(可选)
+#      giveExp: 10 #经验值给予(可选)
+#      giveProExp: 30 #职业经验给予(可选)
+#      needList:
+#        - "GOLD_BLOCK,1" #原版则 "MATERIAL,Number"
+#      giveList:
+#        - "@naijiu4,2" #特殊物品则 "@item.yml中的key,Number"
+#      commands: #(可选)
+#        - "say 这是玩家指令"
+#        - "[OP]say 这是OP指令"
+
 enchanter:
   settings:
     name: "附魔师"
@@ -15,6 +41,7 @@ enchanter:
       needLevel: 3 #游戏等级要求 (与经验值给予冲突)
       removeLevel: 1 #游戏等级减少 (与经验值给予冲突)
       giveExp: 10 #经验值给予 (与游戏等级冲突)
+      giveProExp: 30
       needList:
         - "GOLD_BLOCK,1" #原版则 "MATERIAL,Number"
       giveList:
@@ -33,9 +60,37 @@ enchanter:
       needLevel: 0 #游戏等级要求 (与经验值给予冲突)
       removeLevel: 0 #游戏等级减少 (与经验值给予冲突)
       giveExp: 0 #经验值给予 (与游戏等级冲突)
+      giveProExp: 50
       needList:
         - "IRON_BLOCK,5" #原版则 "MATERIAL,Number"
       giveList:
         - "@xiaolv6,1" #特殊物品则 "@item.yml中的key,Number"
       commands:
         - "say 这次只有玩家指令"
+miner:
+  settings:
+    name: "&a矿工"
+    info:
+      - "&b这是矿工的简介"
+      - "&b附魔物品获得经验值，高等级可制作特殊附魔书"
+  gui:
+    button1:
+      uiNumber: 1
+      slot: 40
+      type: BOOK
+      displayName: "&1测试1"
+      lore:
+        - "&2测试LORE"
+        - "&2测试LORE 2"
+      proLevelNeed: 0
+      needLevel: 3
+      removeLevel: 1
+      giveExp: 10
+      giveProExp: 80
+      needList:
+        - "GOLD_BLOCK,1" #原版则 "MATERIAL,Number"
+      giveList:
+        - "@naijiu4,2" #特殊物品则 "@item.yml中的key,Number"
+      commands:
+        - "say 这是玩家指令"
+        - "[OP]say 这是OP指令"

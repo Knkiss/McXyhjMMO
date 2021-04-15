@@ -2,6 +2,7 @@ package mcxyhj.cn.knkiss.template;
 
 import mcxyhj.cn.knkiss.Utils;
 import mcxyhj.cn.knkiss.ProfessionManager;
+import mcxyhj.cn.knkiss.config.ProfessionData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,6 +19,7 @@ public class Button {
     private int needLevel = 0;
     private int removeLevel = 0;
     private int giveExp = 0;
+    private int giveProExp = 0;
 
     private List<String> commandList = new ArrayList<>();
     private List<String> commandOpList = new ArrayList<>();
@@ -59,6 +61,11 @@ public class Button {
         Utils.addLore(icon,"§8奖励经验:"+giveExp);
     }
 
+    public void setgiveProExp(int giveProExp){
+        this.giveProExp = giveProExp;
+        Utils.addLore(icon,"§8奖励职业经验:"+giveProExp);
+    }
+
     public void setCommand(List<String> commandList,List<String> commandOpList){
         this.commandList = commandList;
         this.commandOpList = commandOpList;
@@ -77,6 +84,7 @@ public class Button {
             if(Utils.removeItem(player,needList)){
                 player.setLevel(player.getLevel() - removeLevel);
                 player.giveExp(giveExp);
+                ProfessionManager.giveProExp(player.getName(),giveProExp);
                 Utils.addItem(player,giveList);
                 commandList.forEach(player::performCommand);
                 if(player.isOp())commandOpList.forEach(player::performCommand);

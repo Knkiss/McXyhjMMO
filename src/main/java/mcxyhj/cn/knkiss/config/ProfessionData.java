@@ -42,7 +42,7 @@ public class ProfessionData {
                 ui.getStringList(id+".needList").forEach(s -> {
                     if(s.contains("@")){
                         String itemKey = s.split(",")[0].replace("@","");
-                        ItemStack item = ItemData.getItemStack(itemKey);
+                        ItemStack item = ItemData.getItemStack(itemKey).clone();
                         item.setAmount(Integer.parseInt(s.split(",")[1]));
                         needList.add(item);
                     }else{
@@ -55,7 +55,7 @@ public class ProfessionData {
                 ui.getStringList(id+".giveList").forEach(s -> {
                     if(s.contains("@")){
                         String itemKey = s.split(",")[0].replace("@","");
-                        ItemStack item = ItemData.getItemStack(itemKey);
+                        ItemStack item = ItemData.getItemStack(itemKey).clone();
                         item.setAmount(Integer.parseInt(s.split(",")[1]));
                         giveList.add(item);
                     }else{
@@ -76,6 +76,10 @@ public class ProfessionData {
                 if(ui.contains(id+".giveExp")){
                     int giveExp = ui.getInt(id+".giveExp");
                     button.setGiveExp(giveExp);
+                }
+                if(ui.contains(id+".giveProExp")){
+                    int giveProExp = ui.getInt(id+".giveProExp");
+                    button.setgiveProExp(giveProExp);
                 }
                 if(ui.contains(id+".commands")){
                     List<String> commandOpList = new ArrayList<>();
@@ -105,13 +109,13 @@ public class ProfessionData {
 
                     if(i==uiNumber-1){
                         gui.setItem(slot,icon);//添加到当前要求界面
-                        guiButtonMap.put(i*100+slot,button);
+                        guiButtonMap.put((i+1)*100+slot,button);
                     }
                     guiList.add(gui);
                 }
             });
             //添加到professionMap中
-            professionMap.put(key,new Profession(name,infoList,guiList,guiButtonMap));
+            professionMap.put(key.toLowerCase(),new Profession(name,infoList,guiList,guiButtonMap));
         });
     }
 

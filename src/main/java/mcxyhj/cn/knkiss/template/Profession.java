@@ -92,9 +92,4 @@ public class Profession implements Listener {
     public void openGUI(Player player,int guiNumber){
         player.openInventory(guiList.get(guiNumber));
     }
-
-    //添加物品到gui中
-    public void initGUI(){
-
-    }
 }
