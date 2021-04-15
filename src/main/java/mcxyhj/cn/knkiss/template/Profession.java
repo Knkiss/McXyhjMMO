@@ -45,6 +45,8 @@ public class Profession implements Listener {
         }else if(slot == 53) {
             openGUI(player, guiList.indexOf(e.getInventory()) + 1);
             return;
+        }else if(slot > 53){
+            return;
         }
         guiButtonMap.get((guiList.indexOf(e.getInventory())+1)*100+slot).onClick(player);
     }

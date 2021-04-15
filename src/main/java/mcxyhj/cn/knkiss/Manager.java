@@ -32,7 +32,7 @@ public class Manager implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         //控制台
-        if(!(sender instanceof Player) || (sender.isOp())){
+        if(!(sender instanceof Player) || sender.isOp()){
             if(args.length>=1){
                 if(args[0].equalsIgnoreCase("admin")){
                     if(args.length>=2){
@@ -60,6 +60,7 @@ public class Manager implements CommandExecutor {
                     }
                 }
             }
+            //控制台直接退出
             if(!(sender instanceof Player)){
                 sendHelp(sender);
                 return true;
@@ -85,6 +86,9 @@ public class Manager implements CommandExecutor {
                                     player.sendMessage("你已重新选择职业："+args[1].toLowerCase());
                                     return true;
                                 }
+                            }else{
+                                player.sendMessage("你已经没有重新选择职业的机会了");
+                                return true;
                             }
                         }else{
                             PlayerData pd = new PlayerData(player.getName(),0,0,true,args[1].toLowerCase());
@@ -94,22 +98,23 @@ public class Manager implements CommandExecutor {
                         }
                     }
                 }
+                player.sendMessage("选择职业列表");
+                ProfessionManager.selectProfessionGui(player);
+                return true;
+
             }else if(args[0].equalsIgnoreCase("gui")){
                 if(ProfessionManager.hasPlayer(player.getName())) ProfessionManager.openGUI(player);
                 else{
-                    player.sendMessage("请先选择职业，可选择的职业有:");
-                    ProfessionData.professionMap.forEach((s, profession) -> player.sendMessage(s));
+                    player.sendMessage("请先选择职业");
+                    ProfessionManager.selectProfessionGui(player);
                 }
                 return true;
             }else if(args[0].equalsIgnoreCase("info")){
-                if(!ProfessionManager.hasPlayer(player.getName())) player.sendMessage("你还没有选择职业，没有你的信息");
-                else{
-                    PlayerData pd = ProfessionManager.getPlayer(player.getName());
-                    player.sendMessage("XyhjMMO玩家信息:"+player.getName());
-                    player.sendMessage("职业:"+pd.profession);
-                    player.sendMessage("等级:"+pd.level);
-                    player.sendMessage("经验值:"+pd.exp);
-                    player.sendMessage("可更换:"+(pd.change?"是":"否"));
+                if(!ProfessionManager.hasPlayer(player.getName())){
+                    player.sendMessage("请先选择职业");
+                    ProfessionManager.selectProfessionGui(player);
+                }else{
+                    ProfessionManager.showInfoToPlayer(player);
                 }
                 return true;
             }
@@ -124,13 +129,8 @@ public class Manager implements CommandExecutor {
             sender.sendMessage("/mmo select <profession> 选择职业");
             sender.sendMessage("/mmo gui 打开对应职业界面");
             sender.sendMessage("/mmo info 查看个人信息");
-            if(sender.isOp()){
-                sender.sendMessage("-----XyhjMMO ADMIN HELP-----");
-                sender.sendMessage("/mmo admin reset 重置所有玩家的选择机会");
-                sender.sendMessage("/mmo admin debug 显示所有玩家信息");
-                sender.sendMessage("/mmo admin clear 清理所有玩家数据");
-            }
-        }else{
+        }
+        if(!(sender instanceof Player) || sender.isOp()){
             sender.sendMessage("-----XyhjMMO CONSOLE HELP-----");
             sender.sendMessage("/mmo admin reset 重置所有玩家的选择机会");
             sender.sendMessage("/mmo admin debug 显示所有玩家信息");
@@ -140,7 +140,7 @@ public class Manager implements CommandExecutor {
 
     private void debugInfo(CommandSender sender){
         //MessageData.debug(sender);
-        ItemData.debug(sender);
+        //ItemData.debug(sender);
         //ProfessionData.debug(sender);
     }
 }

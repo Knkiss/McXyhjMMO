@@ -23,12 +23,21 @@ public class Button {
     private List<String> commandList = new ArrayList<>();
     private List<String> commandOpList = new ArrayList<>();
 
-    //以下四函数用于创建button
+    //用于创建职业选择Button
+    public Button(ItemStack icon,List<String> commandList){
+        this.icon = icon;
+        this.commandList = commandList;
+        this.needList = null;
+        this.giveList = null;
+        this.proLevelNeed = -1;
+    }
+
+    //以下四函数用于创建职业GUI中Button
     public Button(ItemStack icon, int proLevelNeed, List<ItemStack> needList, List<ItemStack> giveList){
         this.icon = icon;
         this.needList = needList;
         this.giveList = giveList;
-        this.proLevelNeed = proLevelNeed;
+        this.proLevelNeed = Math.max(proLevelNeed,0);
         Utils.addLore(icon,"");
         Utils.addLore(icon,"§8需要职业等级:"+proLevelNeed);
         Utils.addLore(icon,"§8需要物品:");
@@ -76,6 +85,12 @@ public class Button {
 
     //点击按钮触发
     public void onClick(Player player){
+        if(proLevelNeed == -1){
+            //职业选择BUTTON
+            commandList.forEach(player::performCommand);
+            return;
+        }
+
         //职业等级检测
         if(ProfessionManager.getPlayer(player.getName()).level< proLevelNeed){
             player.sendMessage("你的职业等级不足，需要"+ proLevelNeed +"级");

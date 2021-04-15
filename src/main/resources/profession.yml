@@ -27,6 +27,7 @@
 enchanter:
   settings:
     name: "附魔师"
+    icon: ENCHANTED_BOOK
     info:
       - "这是附魔师的简介"
       - "附魔物品获得经验值，高等级可制作特殊附魔书"
@@ -70,6 +71,7 @@ enchanter:
 miner:
   settings:
     name: "&a矿工"
+    icon: DIAMOND_PICKAXE
     info:
       - "&b这是矿工的简介"
       - "&b附魔物品获得经验值，高等级可制作特殊附魔书"

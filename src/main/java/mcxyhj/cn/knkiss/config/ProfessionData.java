@@ -9,18 +9,24 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
 public class ProfessionData {
     public static HashMap<String, Profession> professionMap = new HashMap<>();
+    public static Inventory professionGui;
+    public static HashMap<Integer,Button> guiSelectMap = new HashMap<>();
 
     //加载函数
     public static void loadProfessionData(){
+        professionGui = Bukkit.createInventory(null,54,"请选择你的职业");
+
         ConfigManager.configMap.get("profession").getKeys(false).forEach(key -> {
             //职业信息
             String name = Objects.requireNonNull(ConfigManager.configMap.get("profession").getString(key + ".settings.name")).replace("&","§");
             List<String> infoList = Utils.getStringList(ConfigManager.configMap.get("profession").get(key+".settings.info"));
+            Material proIcon = Material.getMaterial(Objects.requireNonNull(ConfigManager.configMap.get("profession").getString(key + ".settings.icon")));
 
             //gui界面
             List<Inventory> guiList = new LinkedList<>();
@@ -115,8 +121,27 @@ public class ProfessionData {
                     guiList.add(gui);
                 }
             });
-            //添加到professionMap中
+            //添加到professionMap中，并添加职业选择按钮到gui
             professionMap.put(key.toLowerCase(),new Profession(name,infoList,guiList,guiButtonMap));
+
+            try{
+                assert proIcon != null;
+                ItemStack icon = new ItemStack(proIcon,1);
+                ItemMeta itemMeta = icon.getItemMeta();
+                assert itemMeta != null;
+                itemMeta.setDisplayName(name);
+                itemMeta.setLore(infoList);
+                icon.setItemMeta(itemMeta);
+                List<String> commandList = new ArrayList<>();
+                commandList.add("mmo select "+key);
+                Button proButton = new Button(icon,commandList);
+
+                professionGui.addItem(icon);
+                guiSelectMap.put(professionGui.firstEmpty()-1,proButton);
+
+            }catch (Exception e){
+                Utils.warning("无法添加"+name+"职业选择按钮，查询设置");
+            }
         });
     }
 

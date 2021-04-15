@@ -1,10 +1,14 @@
 package mcxyhj.cn.knkiss;
 
+import mcxyhj.cn.knkiss.template.infoMapRender;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapView;
 
 import java.util.*;
 import java.util.List;
@@ -89,7 +93,7 @@ public class Utils {
         return itemStack;
     }
 
-    public static ItemStack addLore(ItemStack itemStack,String lore){
+    public static void addLore(ItemStack itemStack,String lore){
         ItemMeta itemMeta = itemStack.getItemMeta();
         assert itemMeta != null;
         List<String> loreList = itemMeta.getLore();
@@ -100,8 +104,6 @@ public class Utils {
 
         itemMeta.setLore(loreList);
         itemStack.setItemMeta(itemMeta);
-
-        return itemStack;
     }
 
     //DEBUG USE 用于获取Item的信息方便打印
@@ -120,5 +122,27 @@ public class Utils {
             itemInfo.add(key+".Enchantments:"+itemStack.getEnchantments());
         }
         return itemInfo;
+    }
+
+    //发送地图
+    public static void sendMap(Player player){
+        ItemStack map = new ItemStack(Material.FILLED_MAP,1);
+        MapMeta mapMeta = (MapMeta) map.getItemMeta();
+        assert mapMeta != null;
+
+        MapView mapView = Bukkit.createMap(player.getWorld());
+        mapView.getRenderers().clear();
+        mapView.addRenderer(new infoMapRender());
+        mapMeta.setMapView(mapView);
+        mapMeta.setDisplayName(player.getName()+"的个人信息");
+
+        map.setItemMeta(mapMeta);
+
+        if(player.getInventory().getItemInMainHand().getType().isAir()){
+            player.getInventory().setItemInMainHand(map);
+            player.updateInventory();
+        }else{
+            player.sendMessage("你的主手已有其他物品");
+        }
     }
 }
