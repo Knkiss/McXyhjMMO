@@ -11,17 +11,17 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class ConfigManager {
-
-    private static final HashMap<String,File> fileMap = new HashMap<>();
+    public static final HashMap<String,File> fileMap = new HashMap<>();
     public static HashMap<String,FileConfiguration> configMap = new HashMap<>();
 
-    //debug
+    //清理所有数据 DEBUG
     public static void clearAllData(){
         Manager.plugin.saveResource("data.yml", true);
         fileMap.replace("data",new File(Manager.plugin.getDataFolder(), "data.yml"));
         configMap.replace("data",YamlConfiguration.loadConfiguration(fileMap.get("data")));
     }
 
+    //加载函数
     public static void loadOnEnable(){
         //注册文件
         fileMap.put("config",null);
@@ -41,6 +41,7 @@ public class ConfigManager {
         ProfessionData.loadProfessionData();
     }
 
+    //重载函数
     public static void checkOnReload(){
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             String path = player.getName();
@@ -57,19 +58,19 @@ public class ConfigManager {
         });
     }
 
+    //保存函数
     public static void saveOnDisable(){
-        ProfessionData.professionMap.forEach((id, profession) -> {
-            profession.playerList.forEach((s, playerData) -> {
-                String path = playerData.name;
-                configMap.get("data").set(path+".level",playerData.level);
-                configMap.get("data").set(path+".exp",playerData.exp);
-                configMap.get("data").set(path+".profession",playerData.profession);
-                configMap.get("data").set(path+".change",playerData.change);
-            });
-        });
+        ProfessionData.professionMap.forEach((id, profession) -> profession.playerList.forEach((s, playerData) -> {
+            String path = playerData.name;
+            configMap.get("data").set(path+".level",playerData.level);
+            configMap.get("data").set(path+".exp",playerData.exp);
+            configMap.get("data").set(path+".profession",playerData.profession);
+            configMap.get("data").set(path+".change",playerData.change);
+        }));
         saveCustomConfig();
     }
 
+    //玩家加入 path=玩家名
     public static void playerJoin(String path){
         if(!configMap.get("data").contains(path+".level"))return;
         int level = configMap.get("data").getInt(path+".level");
@@ -80,6 +81,7 @@ public class ConfigManager {
         ProfessionManager.addPlayer(playerData);
     }
 
+    //玩家离开 path=玩家名
     public static void playerQuit(String path){
         if(ProfessionManager.hasPlayer(path)){
             PlayerData playerData = ProfessionManager.removePlayer(path);
@@ -91,7 +93,7 @@ public class ConfigManager {
         }
     }
 
-    //配置文件默认方法 不必更改
+    //保存默认配置
     private static void saveDefaultConfig() {
         fileMap.forEach((name, file1) -> {
             if(file1 == null){
@@ -102,10 +104,12 @@ public class ConfigManager {
         });
     }
 
+    //获取所有配置
     private static void getAllConfig(){
         fileMap.forEach((name,file1) -> configMap.put(name,YamlConfiguration.loadConfiguration(file1)));
     }
 
+    //保存自定义配置文件
     private static void saveCustomConfig() {
         if (configMap.get("data") == null || fileMap.get("data") == null) {
             return;

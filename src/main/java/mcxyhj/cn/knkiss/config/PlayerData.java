@@ -13,6 +13,7 @@ public class PlayerData {
         this.change = change;
     }
 
+    //添加职业经验值 number=经验值数量
     public void addExp(int number){
         exp = exp + number;
         while(level<PluginData.maxLevel && exp>=getExpMaxThisLevel()){
@@ -21,6 +22,8 @@ public class PlayerData {
         }
     }
 
+    //获取这个等级的经验值限制
+    //TODO 应该从配置文件获取经验值函数
     public int getExpMaxThisLevel(){
         return 100;
     }

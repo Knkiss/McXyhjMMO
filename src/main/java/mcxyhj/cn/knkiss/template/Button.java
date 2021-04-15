@@ -2,7 +2,6 @@ package mcxyhj.cn.knkiss.template;
 
 import mcxyhj.cn.knkiss.Utils;
 import mcxyhj.cn.knkiss.ProfessionManager;
-import mcxyhj.cn.knkiss.config.ProfessionData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,22 +49,26 @@ public class Button {
         });
     }
 
+    //设置等级相关数据
     public void setLevelInfo(int needLevel,int removeLevel){
         this.needLevel = needLevel;
         this.removeLevel = removeLevel;
         Utils.addLore(icon,"§8需要等级:"+needLevel+" 消耗等级:"+removeLevel);
     }
 
+    //设置经验值给予
     public void setGiveExp(int giveExp){
         this.giveExp = giveExp;
         Utils.addLore(icon,"§8奖励经验:"+giveExp);
     }
 
-    public void setgiveProExp(int giveProExp){
+    //设置职业经验给予
+    public void setGiveProExp(int giveProExp){
         this.giveProExp = giveProExp;
         Utils.addLore(icon,"§8奖励职业经验:"+giveProExp);
     }
 
+    //设置指令列表
     public void setCommand(List<String> commandList,List<String> commandOpList){
         this.commandList = commandList;
         this.commandOpList = commandOpList;

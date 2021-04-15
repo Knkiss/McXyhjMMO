@@ -15,6 +15,7 @@ import java.util.*;
 public class ProfessionData {
     public static HashMap<String, Profession> professionMap = new HashMap<>();
 
+    //加载函数
     public static void loadProfessionData(){
         ConfigManager.configMap.get("profession").getKeys(false).forEach(key -> {
             //职业信息
@@ -30,11 +31,11 @@ public class ProfessionData {
             assert ui != null;
             ui.getKeys(false).forEach(id -> {
                 //ICON信息
-                String iconNmae = Objects.requireNonNull(ui.getString(id + ".displayName")).replace("&","§");
+                String iconName = Objects.requireNonNull(ui.getString(id + ".displayName")).replace("&","§");
                 List<String> iconLore = Utils.getStringList(ui.get(id+".lore"));
                 Material iconType = Material.getMaterial(Objects.requireNonNull(ui.getString(id + ".type")));
                 //必须内容
-                ItemStack icon = Utils.createItem(iconType,iconNmae,iconLore);
+                ItemStack icon = Utils.createItem(iconType,iconName,iconLore);
                 int proLevelNeed = ui.getInt(id+".proLevelNeed");
                 List<ItemStack> needList = new ArrayList<>();
                 List<ItemStack> giveList = new ArrayList<>();
@@ -79,7 +80,7 @@ public class ProfessionData {
                 }
                 if(ui.contains(id+".giveProExp")){
                     int giveProExp = ui.getInt(id+".giveProExp");
-                    button.setgiveProExp(giveProExp);
+                    button.setGiveProExp(giveProExp);
                 }
                 if(ui.contains(id+".commands")){
                     List<String> commandOpList = new ArrayList<>();
@@ -119,31 +120,12 @@ public class ProfessionData {
         });
     }
 
+    //DEBUG函数
     public static void debug(CommandSender sender){
         professionMap.forEach((proID, profession) -> {
             sender.sendMessage("[Profession]"+proID+".Name:"+profession.proName);
             profession.info.forEach(s -> sender.sendMessage("[Profession]"+proID+".Info:"+s));
             sender.sendMessage("");
-
-            /*
-            debugList.forEach(buttonClass -> {
-                Utils.getItemInfo("[BUTTON] ICON:",buttonClass.icon).forEach(sender::sendMessage);
-                sender.sendMessage("[BUTTON] proLevelNeed:"+buttonClass.proLevelNeed);
-                sender.sendMessage("[BUTTON] needLevel:"+buttonClass.needLevel);
-                sender.sendMessage("[BUTTON] removeLevel:"+buttonClass.removeLevel);
-                sender.sendMessage("[BUTTON] giveExp:"+buttonClass.giveExp);
-                sender.sendMessage("[BUTTON] commandList:"+buttonClass.commandList.toString());
-                sender.sendMessage("[BUTTON] commandOpList:"+buttonClass.commandOpList.toString());
-                buttonClass.giveList.forEach(itemStack -> Utils.getItemInfo("[BUTTON] giveList:",itemStack).forEach(sender::sendMessage));
-                buttonClass.needList.forEach(itemStack -> Utils.getItemInfo("[BUTTON] needList:",itemStack).forEach(sender::sendMessage));
-                sender.sendMessage("");
-            });
-
-            debugList.forEach(inventory ->{
-                for(ItemStack itemStack:inventory.getContents()){
-                    Utils.getItemInfo("[Inventory Contents] ",itemStack).forEach(sender::sendMessage);
-                }
-            });*/
         });
     }
 }

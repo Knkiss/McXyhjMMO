@@ -20,6 +20,7 @@ public class Profession implements Listener {
 
     public HashMap<String, PlayerData> playerList = new HashMap<>();
 
+    //Profession构造函数，传必须参数
     public Profession(String proName,List<String> info,List<Inventory> guiList,HashMap<Integer, Button> guiButtonMap){
         this.proName = proName;
         this.info = info;
@@ -28,6 +29,7 @@ public class Profession implements Listener {
         Bukkit.getPluginManager().registerEvents(this, Manager.plugin);
     }
 
+    //点击本类中的表的有效按钮时触发
     @EventHandler
     public void onInteractGui(InventoryClickEvent e){
         if(!guiList.contains(e.getInventory()))return;
@@ -47,14 +49,9 @@ public class Profession implements Listener {
         guiButtonMap.get((guiList.indexOf(e.getInventory())+1)*100+slot).onClick(player);
     }
 
-    //添加经验值
+    //添加经验值 name=玩家名 number=经验值
     public void addExp(String name,int number){
         playerList.get(name).addExp(number);
-    }
-
-    //是否存在玩家
-    public boolean hasPlayer(String name){
-        return playerList.containsKey(name);
     }
 
     //获取玩家列表
@@ -67,12 +64,12 @@ public class Profession implements Listener {
         playerList.put(playerData.name,playerData);
     }
 
-    //获取玩家数据
+    //获取玩家数据 name=玩家名
     public PlayerData getPlayerData(String name){
         return playerList.get(name);
     }
 
-    //移除玩家数据并反回
+    //移除玩家数据并反回 name=玩家名
     public PlayerData removePlayerData(String name){
         PlayerData playerData =  playerList.get(name);
         playerList.remove(name);
@@ -88,7 +85,6 @@ public class Profession implements Listener {
     public void openGUI(Player player){
         this.openGUI(player,0);
     }
-
     public void openGUI(Player player,int guiNumber){
         player.openInventory(guiList.get(guiNumber));
     }

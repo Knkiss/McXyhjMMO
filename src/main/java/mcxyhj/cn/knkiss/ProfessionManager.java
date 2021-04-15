@@ -51,11 +51,4 @@ public class ProfessionManager {
         playerProfession.remove(name);
         return ProfessionData.professionMap.get(profession).removePlayerData(name);
     }
-
-    //ConfigManager获得所有playerData
-    public static HashMap<String,PlayerData> getPlayerDataList(){
-        HashMap<String,PlayerData> playerDataList = new HashMap<>();
-        ProfessionData.professionMap.forEach(((string, profession) -> playerDataList.putAll(profession.getPlayerList())));
-        return playerDataList;
-    }
 }

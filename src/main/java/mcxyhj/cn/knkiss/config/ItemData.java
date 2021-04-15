@@ -1,8 +1,6 @@
 package mcxyhj.cn.knkiss.config;
 
-import mcxyhj.cn.knkiss.Manager;
 import mcxyhj.cn.knkiss.Utils;
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -17,11 +15,12 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.*;
 
 public class ItemData {
-    private static final HashMap<String,ItemStack> itemStackHashMap = new HashMap<>();
+    public static final HashMap<String,ItemStack> itemStackHashMap = new HashMap<>();
 
     public static final ItemStack nextPage = new ItemStack(Material.PAPER,1);
     public static final ItemStack lastPage = new ItemStack(Material.PAPER,1);
 
+    //加载函数
     public static void loadItemData(){
         Utils.setNameAndLore(nextPage,"§7下一页","§8点击翻到下一页");
         Utils.setNameAndLore(lastPage,"§7上一页","§8点击翻到上一页");
@@ -35,9 +34,7 @@ public class ItemData {
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 String name = Objects.requireNonNull(ConfigManager.configMap.get("item").getString(key + ".name")).replace("&","§");
                 List<String> loreList = new ArrayList<>();
-                Utils.getStringList(ConfigManager.configMap.get("item").get(key+".lore")).forEach(lore -> {
-                    loreList.add(lore.replace("&","§"));
-                });
+                Utils.getStringList(ConfigManager.configMap.get("item").get(key+".lore")).forEach(lore -> loreList.add(lore.replace("&","§")));
                 assert itemMeta != null;
                 itemMeta.setDisplayName(name);
                 itemMeta.setLore(loreList);
@@ -80,29 +77,23 @@ public class ItemData {
         });
     }
 
+    //获取一个物品 name=物品ID
     public static ItemStack getItemStack(String name){
         return itemStackHashMap.getOrDefault(name, null);
     }
 
-    public static HashMap<String,ItemStack> getItemStackHashMap(){
-        return itemStackHashMap;
-    }
-
+    //DEBUG函数
     public static void debug(CommandSender sender){
         if(sender instanceof Player){
             List<ItemStack> list = new ArrayList<>();
-            ItemData.itemStackHashMap.forEach((s, itemStack) -> {
-                list.add(itemStack);
-            });
+            ItemData.itemStackHashMap.forEach((s, itemStack) -> list.add(itemStack));
             Utils.addItem((Player) sender,list);
         }
 
         itemStackHashMap.forEach((s, itemStack) -> {
             sender.sendMessage("[ItemData]"+s+".Type:"+itemStack.getType() + "    Name:"+ Objects.requireNonNull(itemStack.getItemMeta()).getDisplayName());
             sender.sendMessage("[ItemData]"+s+".Amount:"+itemStack.getAmount());
-            Objects.requireNonNull(itemStack.getItemMeta().getLore()).forEach(lore ->{
-                sender.sendMessage("[ItemData]"+s+".Lore:"+lore);
-            });
+            Objects.requireNonNull(itemStack.getItemMeta().getLore()).forEach(lore -> sender.sendMessage("[ItemData]"+s+".Lore:"+lore));
             if(!itemStack.getEnchantments().isEmpty()){
                 sender.sendMessage("[ItemData]"+s+".Enchantments:"+itemStack.getEnchantments());
             }
