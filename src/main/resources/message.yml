@@ -1,0 +1,10 @@
+index: "&6[XYHJMMO]&f"
+
+admin_reset: "&c所有人的选择权已重置"
+debug_need: "&c将config中的debug更改为TRUE以使用此功能"
+admin_debug: "&c以上为xyhjMMO插件所有信息"
+admin_clear: "&c已清空插件的所有数据"
+
+select_no_chance: "&c你已经没有重新选择职业的机会了"
+reSelect_ok: "&2你已重新选择职业:&e%proName%"
+select_ok: "&2你已选择职业:&e%proName%"

@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class Manager implements CommandExecutor {
@@ -38,23 +39,23 @@ public class Manager implements CommandExecutor {
                     if(args.length>=2){
                         if(args[1].equalsIgnoreCase("reset")){
                             ProfessionManager.reset();
-                            sender.sendMessage("所有人的选择权已重置");
+                            MessageData.sendMessage("admin_reset",sender);
                             return true;
                         }
                         if(!PluginData.debug){
-                            sender.sendMessage("将config中的debug更改为TRUE以使用此功能");
+                            MessageData.sendMessage("debug_need",sender);
                             return true;
                         }
                         if(args[1].equalsIgnoreCase("debug")){
                             debugInfo(sender);
-                            sender.sendMessage("以上为xyhjMMO插件所有信息");
+                            MessageData.sendMessage("admin_debug",sender);
                             return true;
                         }
                         if(args[1].equalsIgnoreCase("clear")){
                             ProfessionManager.playerProfession.clear();
                             ProfessionData.professionMap.forEach((s, profession) -> profession.playerList.clear());
                             ConfigManager.clearAllData();
-                            sender.sendMessage("已清空插件的所有数据");
+                            MessageData.sendMessage("admin_clear",sender);
                             return true;
                         }
                     }
@@ -83,17 +84,21 @@ public class Manager implements CommandExecutor {
                                     pd.level = pd.level /2;
                                     pd.exp = 0;
                                     ProfessionManager.addPlayer(pd);
-                                    player.sendMessage("你已重新选择职业："+args[1].toLowerCase());
+                                    HashMap<String,String> replaceStringHashMap = new HashMap<>();
+                                    replaceStringHashMap.put("%proName%",args[1].toLowerCase());
+                                    MessageData.sendMessage("reSelect_ok",sender,replaceStringHashMap);
                                     return true;
                                 }
                             }else{
-                                player.sendMessage("你已经没有重新选择职业的机会了");
+                                MessageData.sendMessage("select_no_chance",sender);
                                 return true;
                             }
                         }else{
                             PlayerData pd = new PlayerData(player.getName(),0,0,true,args[1].toLowerCase());
                             ProfessionManager.addPlayer(pd);
-                            player.sendMessage("你已选择职业："+args[1].toLowerCase());
+                            HashMap<String,String> replaceStringHashMap = new HashMap<>();
+                            replaceStringHashMap.put("%proName%",args[1].toLowerCase());
+                            MessageData.sendMessage("reSelect_ok",sender,replaceStringHashMap);
                             return true;
                         }
                     }

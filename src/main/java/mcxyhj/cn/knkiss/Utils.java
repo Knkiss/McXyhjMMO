@@ -2,6 +2,7 @@ package mcxyhj.cn.knkiss;
 
 import mcxyhj.cn.knkiss.template.infoMapRender;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -73,14 +74,6 @@ public class Utils {
             }
         }
         return stringList;
-    }
-
-    public static void warning(String warn){
-        Manager.logger.warning(warn);
-    }
-
-    public static void info(String info){
-        Manager.logger.info(info);
     }
 
     public static ItemStack createItem(Material material, String displayName, List<String> loreList){

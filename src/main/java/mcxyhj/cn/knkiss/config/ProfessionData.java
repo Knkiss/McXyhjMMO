@@ -140,7 +140,7 @@ public class ProfessionData {
                 guiSelectMap.put(professionGui.firstEmpty()-1,proButton);
 
             }catch (Exception e){
-                Utils.warning("无法添加"+name+"职业选择按钮，查询设置");
+                MessageData.warning("无法添加"+name+"职业选择按钮，查询设置");
             }
         });
     }

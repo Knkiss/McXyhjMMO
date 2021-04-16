@@ -47,7 +47,7 @@ public class ItemData {
                         assert enchantmentType != null;
                         itemStack.addUnsafeEnchantment(enchantmentType,ConfigManager.configMap.get("item").getInt(key+".enchant_level"));
                     }catch (Exception e){
-                        Utils.warning("item.yml中"+key+"的附魔无法读取");
+                        MessageData.warning("item.yml中"+key+"的附魔无法读取");
                     }
                 }
                 //药水效果
@@ -65,14 +65,14 @@ public class ItemData {
                         itemStack.setItemMeta(meta);
 
                     }catch (Exception e){
-                        Utils.warning("item.yml中"+key+"的药水无法读取");
+                        MessageData.warning("item.yml中"+key+"的药水无法读取");
                     }
                 }
 
                 //添加物品
                 itemStackHashMap.put(key,itemStack);
             }catch (Exception e){
-                Utils.warning("item.yml中"+key+"物品无法读取\n");
+                MessageData.warning("item.yml中"+key+"物品无法读取\n");
             }
         });
     }
