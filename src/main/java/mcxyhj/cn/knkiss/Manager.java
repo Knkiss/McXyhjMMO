@@ -145,7 +145,7 @@ public class Manager implements CommandExecutor {
 
     private void debugInfo(CommandSender sender){
         //MessageData.debug(sender);
-        //ItemData.debug(sender);
+        ItemData.debug(sender);
         //ProfessionData.debug(sender);
     }
 }

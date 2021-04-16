@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -44,8 +45,15 @@ public class ItemData {
                 if(ConfigManager.configMap.get("item").contains(key+".enchant")){
                     try{
                         Enchantment enchantmentType = Enchantment.getByKey(NamespacedKey.minecraft(Objects.requireNonNull(ConfigManager.configMap.get("item").getString(key + ".enchant")).toLowerCase()));
+                        int level = ConfigManager.configMap.get("item").getInt(key+".enchant_level");
                         assert enchantmentType != null;
-                        itemStack.addUnsafeEnchantment(enchantmentType,ConfigManager.configMap.get("item").getInt(key+".enchant_level"));
+    
+                        EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemStack.getItemMeta();
+                        assert enchantmentStorageMeta != null;
+                        enchantmentStorageMeta.addStoredEnchant(enchantmentType,level,true);
+                        
+                        itemStack.setItemMeta(enchantmentStorageMeta);
+                        
                     }catch (Exception e){
                         MessageData.warning("item.yml中"+key+"的附魔无法读取");
                     }
